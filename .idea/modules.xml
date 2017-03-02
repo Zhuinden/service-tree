@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/service-tree.iml" filepath="$PROJECT_DIR$/service-tree.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-tree/service-tree-service-tree.iml" filepath="$PROJECT_DIR$/service-tree/service-tree-service-tree.iml" />
+    </modules>
+  </component>
+</project>
