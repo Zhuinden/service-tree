@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="12d08adf-8347-4e91-aea1-cec3597dec10" name="Default" comment="" />
+    <list default="true" id="12d08adf-8347-4e91-aea1-cec3597dec10" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/cache.properties.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileHashes.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshots.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/fileSnapshotsToTreeSnapshotsIndex.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/taskArtifacts/taskArtifacts.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_service-tree_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_service-tree_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_service-tree_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_service-tree_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_service-tree_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" afterPath="$PROJECT_DIR$/.gradle/2.14.1/tasks/_service-tree_compileDebugJavaWithJavac/localJarClasspathSnapshot/localJarClasspathSnapshot.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CHANGELOG.md" afterPath="$PROJECT_DIR$/CHANGELOG.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/service-tree/src/main/java/com/zhuinden/servicetree/ServiceTree.java" afterPath="$PROJECT_DIR$/service-tree/src/main/java/com/zhuinden/servicetree/ServiceTree.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/service-tree/src/test/java/com/zhuinden/servicetree/ServiceTreeTest.java" afterPath="$PROJECT_DIR$/service-tree/src/test/java/com/zhuinden/servicetree/ServiceTreeTest.java" />
+    </list>
     <ignored path="service-tree.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,62 +55,65 @@
       <file leaf-file-name="ServiceTree.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/service-tree/src/main/java/com/zhuinden/servicetree/ServiceTree.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="48" selection-start-line="9" selection-start-column="48" selection-end-line="9" selection-end-column="48" />
+            <state relative-caret-position="-727">
+              <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
               <folding>
+                <element signature="e#0#6793#0" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#1917#1918#0" expanded="true" />
-                <element signature="e#1982#1983#0" expanded="true" />
-                <element signature="e#2038#2039#0" expanded="true" />
-                <element signature="e#2089#2090#0" expanded="true" />
-                <element signature="e#2124#2125#0" expanded="true" />
-                <element signature="e#2166#2167#0" expanded="true" />
-                <element signature="e#2201#2202#0" expanded="true" />
-                <element signature="e#2238#2239#0" expanded="true" />
-                <element signature="e#2289#2290#0" expanded="true" />
-                <element signature="e#2334#2335#0" expanded="true" />
-                <element signature="e#2684#2685#0" expanded="true" />
-                <element signature="e#2744#2745#0" expanded="true" />
-                <element signature="e#2938#2939#0" expanded="true" />
-                <element signature="e#2981#2982#0" expanded="true" />
-                <element signature="e#3042#3043#0" expanded="true" />
-                <element signature="e#3119#3120#0" expanded="true" />
-                <element signature="e#3182#3183#0" expanded="true" />
-                <element signature="e#3288#3289#0" expanded="true" />
-                <element signature="e#3342#3343#0" expanded="true" />
-                <element signature="e#3397#3398#0" expanded="true" />
-                <element signature="e#3546#3547#0" expanded="true" />
-                <element signature="e#3598#3599#0" expanded="true" />
-                <element signature="e#3661#3662#0" expanded="true" />
-                <element signature="e#3729#3730#0" expanded="true" />
-                <element signature="e#3783#3784#0" expanded="true" />
-                <element signature="e#3829#3830#0" expanded="true" />
-                <element signature="e#4039#4040#0" expanded="true" />
-                <element signature="e#4087#4088#0" expanded="true" />
-                <element signature="e#4136#4137#0" expanded="true" />
-                <element signature="e#4183#4184#0" expanded="true" />
-                <element signature="e#4240#4241#0" expanded="true" />
-                <element signature="e#4299#4300#0" expanded="true" />
-                <element signature="e#4374#4375#0" expanded="true" />
-                <element signature="e#4439#4440#0" expanded="true" />
-                <element signature="e#4478#4479#0" expanded="true" />
-                <element signature="e#4517#4518#0" expanded="true" />
-                <element signature="e#4581#4582#0" expanded="true" />
-                <element signature="e#4630#4631#0" expanded="true" />
-                <element signature="e#4666#4667#0" expanded="true" />
-                <element signature="e#4726#4727#0" expanded="true" />
-                <element signature="e#4827#5127#0" expanded="true" />
-                <element signature="e#5126#5127#0" expanded="true" />
-                <element signature="e#5795#5796#0" expanded="true" />
-                <element signature="e#5841#5842#0" expanded="true" />
-                <element signature="e#5895#5896#0" expanded="true" />
-                <element signature="e#5935#5936#0" expanded="true" />
+                <element signature="e#1378#1379#0" expanded="true" />
+                <element signature="e#1421#1422#0" expanded="true" />
+                <element signature="e#1463#1464#0" expanded="true" />
+                <element signature="e#1509#1510#0" expanded="true" />
+                <element signature="e#2663#2664#0" expanded="true" />
+                <element signature="e#2714#2715#0" expanded="true" />
+                <element signature="e#2749#2750#0" expanded="true" />
+                <element signature="e#2791#2792#0" expanded="true" />
+                <element signature="e#2826#2827#0" expanded="true" />
+                <element signature="e#2863#2864#0" expanded="true" />
+                <element signature="e#2914#2915#0" expanded="true" />
+                <element signature="e#2959#2960#0" expanded="true" />
+                <element signature="e#3309#3310#0" expanded="true" />
+                <element signature="e#3369#3370#0" expanded="true" />
+                <element signature="e#3563#3564#0" expanded="true" />
+                <element signature="e#3606#3607#0" expanded="true" />
+                <element signature="e#3667#3668#0" expanded="true" />
+                <element signature="e#3744#3745#0" expanded="true" />
+                <element signature="e#3807#3808#0" expanded="true" />
+                <element signature="e#3913#3914#0" expanded="true" />
+                <element signature="e#3967#3968#0" expanded="true" />
+                <element signature="e#4022#4023#0" expanded="true" />
+                <element signature="e#4171#4172#0" expanded="true" />
+                <element signature="e#4223#4224#0" expanded="true" />
+                <element signature="e#4286#4287#0" expanded="true" />
+                <element signature="e#4354#4355#0" expanded="true" />
+                <element signature="e#4408#4409#0" expanded="true" />
+                <element signature="e#4454#4455#0" expanded="true" />
+                <element signature="e#4664#4665#0" expanded="true" />
+                <element signature="e#4712#4713#0" expanded="true" />
+                <element signature="e#4761#4762#0" expanded="true" />
+                <element signature="e#4808#4809#0" expanded="true" />
+                <element signature="e#4865#4866#0" expanded="true" />
+                <element signature="e#4924#4925#0" expanded="true" />
+                <element signature="e#4999#5000#0" expanded="true" />
+                <element signature="e#5064#5065#0" expanded="true" />
+                <element signature="e#5103#5104#0" expanded="true" />
+                <element signature="e#5142#5143#0" expanded="true" />
+                <element signature="e#5206#5207#0" expanded="true" />
+                <element signature="e#5255#5256#0" expanded="true" />
+                <element signature="e#5291#5292#0" expanded="true" />
+                <element signature="e#5351#5352#0" expanded="true" />
+                <element signature="e#5452#5752#0" expanded="true" />
+                <element signature="e#5751#5752#0" expanded="true" />
+                <element signature="e#6420#6421#0" expanded="true" />
+                <element signature="e#6466#6467#0" expanded="true" />
+                <element signature="e#6520#6521#0" expanded="true" />
+                <element signature="e#6560#6561#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/service-tree/src/main/AndroidManifest.xml">
           <provider editor-type-id="android-manifest">
             <state />
@@ -132,11 +149,33 @@
       <file leaf-file-name="ServiceTreeTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/service-tree/src/test/java/com/zhuinden/servicetree/ServiceTreeTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="46" column="24" selection-start-line="46" selection-start-column="24" selection-end-line="46" selection-end-column="24" />
+            <state relative-caret-position="327">
+              <caret line="56" column="36" selection-start-line="56" selection-start-column="36" selection-end-line="56" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CHANGELOG.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/CHANGELOG.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="68">
+                <caret line="4" column="138" selection-start-line="4" selection-start-column="138" selection-end-line="4" selection-end-column="138" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+          <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="0">
+                <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -1933,9 +1972,10 @@
         <option value="$PROJECT_DIR$/service-tree/src/test/java/com/zhuinden/servicetree/TestKey.java" />
         <option value="$PROJECT_DIR$/service-tree/src/test/java/com/zhuinden/servicetree/TraversalTest.java" />
         <option value="$PROJECT_DIR$/service-tree/src/test/java/com/zhuinden/servicetree/TestSuite.java" />
+        <option value="$PROJECT_DIR$/service-tree/build.gradle" />
         <option value="$PROJECT_DIR$/service-tree/src/main/java/com/zhuinden/servicetree/ServiceTree.java" />
         <option value="$PROJECT_DIR$/service-tree/src/test/java/com/zhuinden/servicetree/ServiceTreeTest.java" />
-        <option value="$PROJECT_DIR$/service-tree/build.gradle" />
+        <option value="$PROJECT_DIR$/CHANGELOG.md" />
       </list>
     </option>
   </component>
@@ -2487,14 +2527,14 @@
     <history-entry file="TestSuite - 2017.03.02 at 01h 10m 44s.xml">
       <configuration name="TestSuite" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="TestSuite - 2017.03.02 at 02h 00m 45s.xml">
+      <configuration name="TestSuite" configurationId="JUnit" />
+    </history-entry>
     <history-entry file="TraversalTest_traversePostOrderWorksAsIntended - 2017.03.01 at 22h 07m 00s.xml">
       <configuration name="TraversalTest.traversePostOrderWorksAsIntended" configurationId="JUnit" />
     </history-entry>
     <history-entry file="TraversalTest_traversePostOrderWorksAsIntended - 2017.03.01 at 22h 09m 18s.xml">
       <configuration name="TraversalTest.traversePostOrderWorksAsIntended" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TraversalTest_traversePreOrderWorksAsIntended - 2017.03.01 at 22h 04m 52s.xml">
-      <configuration name="TraversalTest.traversePreOrderWorksAsIntended" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
@@ -2516,14 +2556,14 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925472" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32925472" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Coverage" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32925472" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925472" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
@@ -2600,16 +2640,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/service-tree/src/test/java/com/zhuinden/servicetree/ServiceTreeTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="46" column="24" selection-start-line="46" selection-start-column="24" selection-end-line="46" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/service-tree/src/test/java/com/zhuinden/servicetree/TraversalTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="816">
@@ -2624,62 +2654,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/service-tree/src/main/java/com/zhuinden/servicetree/ServiceTree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="48" selection-start-line="9" selection-start-column="48" selection-end-line="9" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1917#1918#0" expanded="true" />
-            <element signature="e#1982#1983#0" expanded="true" />
-            <element signature="e#2038#2039#0" expanded="true" />
-            <element signature="e#2089#2090#0" expanded="true" />
-            <element signature="e#2124#2125#0" expanded="true" />
-            <element signature="e#2166#2167#0" expanded="true" />
-            <element signature="e#2201#2202#0" expanded="true" />
-            <element signature="e#2238#2239#0" expanded="true" />
-            <element signature="e#2289#2290#0" expanded="true" />
-            <element signature="e#2334#2335#0" expanded="true" />
-            <element signature="e#2684#2685#0" expanded="true" />
-            <element signature="e#2744#2745#0" expanded="true" />
-            <element signature="e#2938#2939#0" expanded="true" />
-            <element signature="e#2981#2982#0" expanded="true" />
-            <element signature="e#3042#3043#0" expanded="true" />
-            <element signature="e#3119#3120#0" expanded="true" />
-            <element signature="e#3182#3183#0" expanded="true" />
-            <element signature="e#3288#3289#0" expanded="true" />
-            <element signature="e#3342#3343#0" expanded="true" />
-            <element signature="e#3397#3398#0" expanded="true" />
-            <element signature="e#3546#3547#0" expanded="true" />
-            <element signature="e#3598#3599#0" expanded="true" />
-            <element signature="e#3661#3662#0" expanded="true" />
-            <element signature="e#3729#3730#0" expanded="true" />
-            <element signature="e#3783#3784#0" expanded="true" />
-            <element signature="e#3829#3830#0" expanded="true" />
-            <element signature="e#4039#4040#0" expanded="true" />
-            <element signature="e#4087#4088#0" expanded="true" />
-            <element signature="e#4136#4137#0" expanded="true" />
-            <element signature="e#4183#4184#0" expanded="true" />
-            <element signature="e#4240#4241#0" expanded="true" />
-            <element signature="e#4299#4300#0" expanded="true" />
-            <element signature="e#4374#4375#0" expanded="true" />
-            <element signature="e#4439#4440#0" expanded="true" />
-            <element signature="e#4478#4479#0" expanded="true" />
-            <element signature="e#4517#4518#0" expanded="true" />
-            <element signature="e#4581#4582#0" expanded="true" />
-            <element signature="e#4630#4631#0" expanded="true" />
-            <element signature="e#4666#4667#0" expanded="true" />
-            <element signature="e#4726#4727#0" expanded="true" />
-            <element signature="e#4827#5127#0" expanded="true" />
-            <element signature="e#5126#5127#0" expanded="true" />
-            <element signature="e#5795#5796#0" expanded="true" />
-            <element signature="e#5841#5842#0" expanded="true" />
-            <element signature="e#5895#5896#0" expanded="true" />
-            <element signature="e#5935#5936#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/service-tree/src/main/AndroidManifest.xml">
       <provider editor-type-id="android-manifest">
         <state />
@@ -2688,6 +2662,95 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service-tree/src/main/java/com/zhuinden/servicetree/ServiceTree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-727">
+          <caret line="37" column="28" selection-start-line="37" selection-start-column="28" selection-end-line="37" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#6793#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#1378#1379#0" expanded="true" />
+            <element signature="e#1421#1422#0" expanded="true" />
+            <element signature="e#1463#1464#0" expanded="true" />
+            <element signature="e#1509#1510#0" expanded="true" />
+            <element signature="e#2663#2664#0" expanded="true" />
+            <element signature="e#2714#2715#0" expanded="true" />
+            <element signature="e#2749#2750#0" expanded="true" />
+            <element signature="e#2791#2792#0" expanded="true" />
+            <element signature="e#2826#2827#0" expanded="true" />
+            <element signature="e#2863#2864#0" expanded="true" />
+            <element signature="e#2914#2915#0" expanded="true" />
+            <element signature="e#2959#2960#0" expanded="true" />
+            <element signature="e#3309#3310#0" expanded="true" />
+            <element signature="e#3369#3370#0" expanded="true" />
+            <element signature="e#3563#3564#0" expanded="true" />
+            <element signature="e#3606#3607#0" expanded="true" />
+            <element signature="e#3667#3668#0" expanded="true" />
+            <element signature="e#3744#3745#0" expanded="true" />
+            <element signature="e#3807#3808#0" expanded="true" />
+            <element signature="e#3913#3914#0" expanded="true" />
+            <element signature="e#3967#3968#0" expanded="true" />
+            <element signature="e#4022#4023#0" expanded="true" />
+            <element signature="e#4171#4172#0" expanded="true" />
+            <element signature="e#4223#4224#0" expanded="true" />
+            <element signature="e#4286#4287#0" expanded="true" />
+            <element signature="e#4354#4355#0" expanded="true" />
+            <element signature="e#4408#4409#0" expanded="true" />
+            <element signature="e#4454#4455#0" expanded="true" />
+            <element signature="e#4664#4665#0" expanded="true" />
+            <element signature="e#4712#4713#0" expanded="true" />
+            <element signature="e#4761#4762#0" expanded="true" />
+            <element signature="e#4808#4809#0" expanded="true" />
+            <element signature="e#4865#4866#0" expanded="true" />
+            <element signature="e#4924#4925#0" expanded="true" />
+            <element signature="e#4999#5000#0" expanded="true" />
+            <element signature="e#5064#5065#0" expanded="true" />
+            <element signature="e#5103#5104#0" expanded="true" />
+            <element signature="e#5142#5143#0" expanded="true" />
+            <element signature="e#5206#5207#0" expanded="true" />
+            <element signature="e#5255#5256#0" expanded="true" />
+            <element signature="e#5291#5292#0" expanded="true" />
+            <element signature="e#5351#5352#0" expanded="true" />
+            <element signature="e#5452#5752#0" expanded="true" />
+            <element signature="e#5751#5752#0" expanded="true" />
+            <element signature="e#6420#6421#0" expanded="true" />
+            <element signature="e#6466#6467#0" expanded="true" />
+            <element signature="e#6520#6521#0" expanded="true" />
+            <element signature="e#6560#6561#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/service-tree/src/test/java/com/zhuinden/servicetree/ServiceTreeTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="327">
+          <caret line="56" column="36" selection-start-line="56" selection-start-column="36" selection-end-line="56" selection-end-column="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CHANGELOG.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="68">
+            <caret line="4" column="138" selection-start-line="4" selection-start-column="138" selection-end-line="4" selection-end-column="138" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>

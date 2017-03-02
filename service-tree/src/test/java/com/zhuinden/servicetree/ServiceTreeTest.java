@@ -2,6 +2,8 @@ package com.zhuinden.servicetree;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -44,7 +46,15 @@ public class ServiceTreeTest {
         Object service = new Object();
         ServiceTree serviceTree = new ServiceTree();
         ServiceTree.Node node = serviceTree.createRootNode(rootKey).bindService("SERVICE", service).get();
-        assertThat(node.getBoundServices()).contains(service);
+        List<ServiceTree.Node.Entry> entries = node.getBoundServices();
+        boolean didFind = false;
+        for(ServiceTree.Node.Entry entry : entries) {
+            if(entry.getService() == service) {
+                didFind = true;
+                break;
+            }
+        }
+        assertThat(didFind).isTrue();
         assertThat(node.getService("SERVICE")).isSameAs(service);
     }
 

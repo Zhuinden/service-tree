@@ -35,6 +35,24 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 public class ServiceTree {
     public static class Node {
+        public static class Entry {
+            private String name;
+            private Object service;
+
+            Entry(String name, Object service) {
+                this.name = name;
+                this.service = service;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public Object getService() {
+                return service;
+            }
+        }
+
         private Node parent;
 
         private Object localKey;
@@ -63,8 +81,12 @@ public class ServiceTree {
             }
         }
 
-        public List<Object> getBoundServices() {
-            return new ArrayList<>(services.values());
+        public List<Entry> getBoundServices() {
+            List<Entry> entries = new ArrayList<>(services.size());
+            for(Map.Entry<String, Object> entry : services.entrySet()) {
+                entries.add(new Entry(entry.getKey(), entry.getValue()));
+            }
+            return entries;
         }
 
         void addService(String name, Object service) {
