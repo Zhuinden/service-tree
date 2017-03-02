@@ -98,7 +98,7 @@ public class ServiceTreeTest {
         assertThat(child.getService("SERVICE")).isSameAs(service);
         assertThat(node.getService("SERVICE")).isSameAs(service);
 
-        serviceTree.unregisterRootService("SERVICE");
+        assertThat(serviceTree.unregisterRootService("SERVICE")).isSameAs(service);
 
         assertThat(child.getService("SERVICE")).isNull();
         assertThat(node.getService("SERVICE")).isNull();

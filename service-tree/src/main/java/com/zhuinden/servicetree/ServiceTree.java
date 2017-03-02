@@ -101,8 +101,9 @@ public class ServiceTree {
             return parent;
         }
 
-        private void removeService(String name) {
-            services.remove(name);
+        private <T> T removeService(String name) {
+            // noinspection unchecked
+            return (T) services.remove(name);
         }
 
         public static class Binder {
@@ -232,8 +233,9 @@ public class ServiceTree {
         root.addService(name, service);
     }
 
-    public void unregisterRootService(String name) {
-        root.removeService(name);
+    public <T> T unregisterRootService(String name) {
+        // noinspection unchecked
+        return (T) root.removeService(name);
     }
 
     public interface Walk {

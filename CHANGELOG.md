@@ -1,5 +1,9 @@
 # Change log
 
+-Service Tree 1.0.2 (2017-03-02)
+--------------------------------
+- `unregisterRootService(String name)` should return the removed service.
+
 -Service Tree 1.0.1 (2017-03-02)
 --------------------------------
 - `getBoundServices()` should return a `List<Entry`, because `List<Object>` containing services without their keys is essentially useless.
