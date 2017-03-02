@@ -8,6 +8,8 @@ Each Node is constructed with its services set using the `ServiceTree.Node.Binde
 
 The first level is created with `createRootNode()`, the following levels are created by `createChildNode()`.
 
+See the class and the tests for more details, it's quite short.
+
 ## Using Service Tree
 
 In order to use Service Tree, you need to add jitpack to your project root gradle:
@@ -30,11 +32,7 @@ In order to use Service Tree, you need to add jitpack to your project root gradl
 
 and add the compile dependency to your module level gradle.
 
-    compile 'com.github.Zhuinden:service-tree:1.0.3'
-
-## How does it work?
-
-Check the tests. They're pretty self-explanatory.
+    compile 'com.github.Zhuinden:service-tree:1.0.5'
 
 
 ## License

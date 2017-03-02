@@ -16,6 +16,8 @@
 package com.zhuinden.servicetree;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.lang.annotation.Retention;
 import java.util.ArrayList;
@@ -30,10 +32,14 @@ import java.util.Set;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * Created by Zhuinden on 2017.03.01..
+ * A tree that is able to hold bound services in each of its {@link Node}.
+ *
+ * Also makes it possible to traverse through the tree, or any of its subtrees in a particular type of order using {@link Walk}.
  */
-
 public class ServiceTree {
+    /**
+     * A node that holds its key, its children and its bound services.
+     */
     public static class Node {
         public static class Entry {
             private String name;
@@ -44,12 +50,15 @@ public class ServiceTree {
                 this.service = service;
             }
 
+            @NonNull
             public String getName() {
                 return name;
             }
 
-            public Object getService() {
-                return service;
+            @NonNull
+            public <T> T getService() {
+                // noinspection unchecked
+                return (T) service;
             }
         }
 
@@ -66,21 +75,46 @@ public class ServiceTree {
             this.localKey = key;
         }
 
+        /**
+         * Returns the key this node is identified by.
+         *
+         * @param <T> the type of the key
+         * @return the key
+         */
+        @NonNull
         public <T> T getKey() {
             // noinspection unchecked
             return (T) localKey;
         }
 
-        public <T> T getService(String name) {
+        /**
+         * Returns the service specified by this name. If not found, then it's checked in its parent, and so on.
+         * If not found, it returns null.
+         *
+         * @param name the name of the service
+         * @param <T>  the type of the service
+         * @return the service
+         */
+        @Nullable
+        public <T> T getService(@NonNull String name) {
+            if(name == null) {
+                throw new NullPointerException("Name cannot be null!");
+            }
             if(services.containsKey(name)) {
                 // noinspection unchecked
                 return (T) services.get(name);
             } else {
                 // noinspection unchecked
-                return parent == null ? null : (T)parent.getService(name);
+                return parent == null ? null : (T) parent.getService(name);
             }
         }
 
+        /**
+         * Returns the services that are locally bound to this given node.
+         *
+         * @return a list of {@link Entry} that contains the services and their names.
+         */
+        @NonNull
         public List<Entry> getBoundServices() {
             List<Entry> entries = new ArrayList<>(services.size());
             for(Map.Entry<String, Object> entry : services.entrySet()) {
@@ -97,6 +131,12 @@ public class ServiceTree {
             walk.execute(this);
         }
 
+        /**
+         * Returns the parent of this node.
+         * Null only for the `root` key of the service tree, that all other root keys are appended to as children.
+         *
+         * @return the parent
+         */
         public Node getParent() {
             return parent;
         }
@@ -106,6 +146,11 @@ public class ServiceTree {
             return (T) services.remove(name);
         }
 
+        /**
+         * Enables binding services into the node.
+         *
+         * It is not a builder, the internal node is modified directly.
+         */
         public static class Binder {
             private Node node;
 
@@ -115,15 +160,44 @@ public class ServiceTree {
                 serviceTree.addNode(node);
             }
 
-            public Object getService(String name) {
+            /**
+             * Obtains service from the created node. If not found, it tries to look in its parent, and so on.
+             *
+             * @param name The name of the service
+             * @return the service, or null if not found
+             */
+            @Nullable
+            public Object getService(@NonNull String name) {
+                if(name == null) {
+                    throw new NullPointerException("Name cannot be null!");
+                }
                 return node.getService(name);
             }
 
-            public Binder bindService(String name, Object service) {
+            /**
+             * Binds the given service by the given name to this given node.
+             *
+             * @param name    The name of the service
+             * @param service The service
+             * @return the current binder
+             */
+            @NonNull
+            public Binder bindService(@NonNull String name, @NonNull Object service) {
+                if(name == null) {
+                    throw new NullPointerException("Name cannot be null!");
+                }
+                if(service == null) {
+                    throw new NullPointerException("Service cannot be null!");
+                }
                 node.addService(name, service);
                 return this;
             }
 
+            /**
+             * Obtains the node this binder is able to bind services to.
+             *
+             * @return the node
+             */
             public Node get() {
                 return node;
             }
@@ -131,12 +205,18 @@ public class ServiceTree {
 
         @Override
         public int hashCode() {
-            return Node.class.hashCode() + 37*getKey().hashCode();
+            return Node.class.hashCode() + 37 * getKey().hashCode();
         }
 
+        /**
+         * Two nodes are equal if their key is the same.
+         *
+         * @param obj the object
+         * @return whether they are equal.
+         */
         @Override
         public boolean equals(Object obj) {
-            return obj != null && obj instanceof Node && ((Node)obj).getKey().equals(localKey);
+            return obj != null && obj instanceof Node && ((Node) obj).getKey().equals(localKey);
         }
 
         @Override
@@ -176,31 +256,102 @@ public class ServiceTree {
         nodeMap.put(node.getKey(), node);
     }
 
-    public boolean hasNodeWithKey(Object key) {
+    /**
+     * Returns if there is a node for the given key.
+     *
+     * @param key The key
+     * @return true if the node exists
+     */
+    public boolean hasNodeWithKey(@NonNull Object key) {
+        checkKey(key);
         return nodeMap.containsKey(key);
     }
 
-    public Node.Binder createRootNode(Object nodeKey) {
+    private void checkKey(Object key) {
+        if(key == null) {
+            throw new NullPointerException("Key cannot be null!");
+        }
+    }
+
+    /**
+     * Creates a node that is the direct child of the root in the tree, and otherwise has no parent.
+     *
+     * @param nodeKey the key that identifies the node
+     * @return the {@link Node.Binder} to bind services with
+     */
+    @NonNull
+    public Node.Binder createRootNode(@NonNull Object nodeKey) {
+        checkKey(nodeKey);
         return new Node.Binder(nodeKey, this, root);
     }
 
-    public Node.Binder createChildNode(Node parentNode, Object nodeKey) {
+    /**
+     * Creates a node that is a child of the specified parent node.
+     * Children are removed along with their parent. Children inherit the services of their parent.
+     *
+     * @param parentNode the parent node this node is the child of
+     * @param nodeKey    the key that identifies the child node
+     * @return the {@link Node.Binder} to bind services with
+     */
+    @NonNull
+    public Node.Binder createChildNode(@NonNull Node parentNode, @NonNull Object nodeKey) {
+        checkNode(parentNode);
+        checkKey(nodeKey);
         return new Node.Binder(nodeKey, this, parentNode);
     }
 
-    public Node getNode(Object key) {
+    private void checkNode(Node node) {
+        if(node == null) {
+            throw new NullPointerException("Node cannot be null!");
+        }
+    }
+
+    /**
+     * Returns the node for the given key. If not found, an illegal state exception is thrown.
+     *
+     * @param key the key that identifies the node
+     * @return the node
+     */
+    @NonNull
+    public Node getNode(@NonNull Object key) {
+        checkKey(key);
+        if(!hasNodeWithKey(key)) {
+            throw new IllegalStateException("Service node does not exist for key [" + key + "]!");
+        }
         return nodeMap.get(key);
     }
 
-    public void traverseTree(@Walk.Mode int mode, Walk walk) {
+    /**
+     * Traverses the whole tree, including its root key.
+     *
+     * @param mode the order mode (see {@link ServiceTree.Walk}).
+     * @param walk the {@link Walk} that should be executed for each node
+     */
+    public void traverseTree(@Walk.Mode int mode, @NonNull Walk walk) {
+        checkWalk(walk);
         traverseSubtree(root, mode, walk);
     }
 
+    private void checkWalk(Walk walk) {
+        if(walk == null) {
+            throw new NullPointerException("Walk cannot be null!");
+        }
+    }
+
+    /**
+     * Removes all nodes in the tree.
+     */
     public void removeAllNodes() {
         removeNodeAndChildren(nodeMap.get(ROOT_KEY));
     }
 
-    public void removeNodeAndChildren(Node node) {
+    /**
+     * Removes the node and its children.
+     *
+     * @param node the node to be removed
+     */
+    public void removeNodeAndChildren(@NonNull Node node) {
+        checkNode(node);
         traverseSubtree(node, Walk.POST_ORDER, new Walk() {
             @Override
             public void execute(Node node) {
@@ -213,7 +364,16 @@ public class ServiceTree {
         });
     }
 
-    public void traverseSubtree(Node node, @Walk.Mode int mode, Walk walk) {
+    /**
+     * Traverses the subtree for this given node.
+     *
+     * @param node the {@link Node} from which the traversal should start
+     * @param mode the order mode (see {@link Walk})
+     * @param walk the {@link Walk} that should be executed for each node
+     */
+    public void traverseSubtree(@NonNull Node node, @Walk.Mode int mode, @NonNull Walk walk) {
+        checkNode(node);
+        checkWalk(walk);
         if(mode == Walk.PRE_ORDER) {
             node.execute(walk);
             for(Node child : node.children) {
@@ -229,29 +389,75 @@ public class ServiceTree {
         }
     }
 
-    public void registerRootService(String name, Object service) {
+    /**
+     * Adds a service to the node of the tree root.
+     *
+     * @param name    the name of the service
+     * @param service the service
+     */
+    public void registerRootService(@NonNull String name, @NonNull Object service) {
+        checkName(name);
+        checkService(name);
         root.addService(name, service);
     }
 
+    private void checkService(Object service) {
+        if(service == null) {
+            throw new NullPointerException("Service cannot be null!");
+        }
+    }
+
+    private void checkName(String name) {
+        if(name == null) {
+            throw new NullPointerException("Name cannot be null!");
+        }
+    }
+
+    /**
+     * Gets the service specified by the given name.
+     *
+     * @param name the name of the service
+     * @param <T>  the type of the service
+     * @return the service
+     */
+    @Nullable
     public <T> T getRootService(String name) {
         // noinspection unchecked
         return (T) root.getService(name);
     }
 
+    /**
+     * Removes a service from the node of the tree root.
+     *
+     * @param name the name of the service
+     * @param <T> the type of the service
+     * @return the removed service
+     */
     public <T> T unregisterRootService(String name) {
+        checkName(name);
         // noinspection unchecked
         return (T) root.removeService(name);
     }
 
+    /**
+     * The operation that is executed for each node during {@link ServiceTree#traverseTree(int, Walk)} and {@link ServiceTree#traverseSubtree(Node, int, Walk)}.
+     */
     public interface Walk {
-        void execute(Node node);
+        void execute(@NonNull Node node);
 
         @Retention(SOURCE)
         @IntDef({PRE_ORDER, POST_ORDER})
         @interface Mode {
         }
 
+        /**
+         * Begins from the specified node, and progresses to its children from left to right.
+         */
         int PRE_ORDER = 1;
+
+        /**
+         * Begins from the bottom right child, and walks upwards the tree, and ends with the specified node.
+         */
         int POST_ORDER = 2;
     }
 }

@@ -1,5 +1,9 @@
 # Change log
 
+-Service Tree 1.0.5 (2017-03-02)
+--------------------------------
+- Added Javadocs and null checks.
+
 -Service Tree 1.0.3 (2017-03-02)
 --------------------------------
 - Added `getRootService(String name)`.
@@ -15,5 +19,3 @@
 -Service Tree 1.0.0 (2017-03-02)
 --------------------------------
 - Initial release.
-
-The library is so simple though that it goes to 1.0.0 directly.
