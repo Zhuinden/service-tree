@@ -233,6 +233,11 @@ public class ServiceTree {
         root.addService(name, service);
     }
 
+    public <T> T getRootService(String name) {
+        // noinspection unchecked
+        return (T) root.getService(name);
+    }
+
     public <T> T unregisterRootService(String name) {
         // noinspection unchecked
         return (T) root.removeService(name);

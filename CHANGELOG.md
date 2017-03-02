@@ -1,5 +1,9 @@
 # Change log
 
+-Service Tree 1.0.3 (2017-03-02)
+--------------------------------
+- Added `getRootService(String name)`.
+
 -Service Tree 1.0.2 (2017-03-02)
 --------------------------------
 - `unregisterRootService(String name)` should return the removed service.
