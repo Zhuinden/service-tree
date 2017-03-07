@@ -167,7 +167,7 @@ public class ServiceTree {
              * @return the service, or null if not found
              */
             @Nullable
-            public Object getService(@NonNull String name) {
+            public <T> T getService(@NonNull String name) {
                 if(name == null) {
                     throw new NullPointerException("Name cannot be null!");
                 }

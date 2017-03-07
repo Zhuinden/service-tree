@@ -1,1 +1,1 @@
-include ':service-tree'
+include ':service-tree', ':service-tree-fragment-example'

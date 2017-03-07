@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/service-tree.iml" filepath="$PROJECT_DIR$/service-tree.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-tree-fragment-example/service-tree-fragment-example.iml" filepath="$PROJECT_DIR$/service-tree-fragment-example/service-tree-fragment-example.iml" />
       <module fileurl="file://$PROJECT_DIR$/service-tree/service-tree-service-tree.iml" filepath="$PROJECT_DIR$/service-tree/service-tree-service-tree.iml" />
     </modules>
   </component>

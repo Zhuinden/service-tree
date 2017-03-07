@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="state-bundle-1.0.0">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/service-tree-fragment-example/build/intermediates/exploded-aar/com.github.Zhuinden/state-bundle/1.0.0/res" />
+      <root url="jar://$PROJECT_DIR$/service-tree-fragment-example/build/intermediates/exploded-aar/com.github.Zhuinden/state-bundle/1.0.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Zhuinden/state-bundle/1.0.0/14cfa34c2f001f70d13a6e11f10d5dceb1bc8320/state-bundle-1.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
