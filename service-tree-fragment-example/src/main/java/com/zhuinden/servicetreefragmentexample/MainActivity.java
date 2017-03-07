@@ -36,7 +36,7 @@ public class MainActivity
             for(Fragment fragment : fragments) {
                 if(fragment != null && fragment instanceof HasServices) { // active fragments is a list that can have NULL element
                     HasServices serviceFragment = ((HasServices)fragment);
-                    String newTag = serviceFragment.getServiceTag();
+                    String newTag = serviceFragment.getNodeTag();
                     newTags.add(newTag);
                     registerFragmentServices(fragment);
                 }
@@ -53,7 +53,7 @@ public class MainActivity
     public void registerFragmentServices(Fragment fragment) {
         if(fragment != null && fragment instanceof HasServices) { // active fragments is a list that can have NULL element
             HasServices serviceFragment = ((HasServices)fragment);
-            String newTag = serviceFragment.getServiceTag();
+            String newTag = serviceFragment.getNodeTag();
             if(!serviceTree.hasNodeWithKey(newTag)) {
                 serviceFragment.bindServices(serviceTree.createRootNode(newTag));
             }
@@ -101,7 +101,7 @@ public class MainActivity
         if(name.equals(TAG)) {
             return this;
         }
-        if(name.equals(Services.TAG)) {
+        if(name.equals(Nodes.TAG)) {
             return serviceTree;
         }
         return super.getSystemService(name);

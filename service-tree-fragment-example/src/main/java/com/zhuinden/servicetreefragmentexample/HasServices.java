@@ -7,7 +7,7 @@ import com.zhuinden.servicetree.ServiceTree;
  */
 
 public interface HasServices {
-    String getServiceTag();
+    String getNodeTag();
 
     void bindServices(ServiceTree.Node.Binder binder);
 }

@@ -37,19 +37,19 @@ public class FirstFragment extends Fragment implements HasServices {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
         ButterKnife.bind(this, view);
-        FirstComponent firstComponent = Services.get(getContext()).getNode(TAG).getService(DaggerService.TAG);
+        FirstComponent firstComponent = DaggerService.getService(Nodes.getNode(getContext(), TAG));
         firstComponent.inject(this);
         return view;
     }
 
     @Override
-    public String getServiceTag() {
+    public String getNodeTag() {
         return TAG;
     }
 
     @Override
     public void bindServices(ServiceTree.Node.Binder binder) {
-        MainComponent mainComponent = binder.getService(DaggerService.TAG);
-        binder.bindService(DaggerService.TAG, DaggerFirstComponent.builder().mainComponent(mainComponent).build());
+        MainComponent mainComponent = DaggerService.getService(binder.get());
+        DaggerService.bind(binder, DaggerFirstComponent.builder().mainComponent(mainComponent).build());
     }
 }

@@ -25,7 +25,7 @@ public class SecondFragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_second, container, false);
         ButterKnife.bind(this, view);
-        SecondComponent secondComponent = Services.get(getContext()).getNode(TAG).getService(DaggerService.TAG);
+        SecondComponent secondComponent = DaggerService.getService(Nodes.getNode(getContext(), TAG));
         secondComponent.inject(this);
         return view;
     }
@@ -38,13 +38,13 @@ public class SecondFragment
     }
 
     @Override
-    public String getServiceTag() {
+    public String getNodeTag() {
         return TAG;
     }
 
     @Override
     public void bindServices(ServiceTree.Node.Binder binder) {
-        MainComponent mainComponent = binder.getService(DaggerService.TAG);
-        binder.bindService(DaggerService.TAG, DaggerSecondComponent.builder().mainComponent(mainComponent).build());
+        MainComponent mainComponent = DaggerService.getService(binder.get());
+        DaggerService.bind(binder, DaggerSecondComponent.builder().mainComponent(mainComponent).build());
     }
 }
