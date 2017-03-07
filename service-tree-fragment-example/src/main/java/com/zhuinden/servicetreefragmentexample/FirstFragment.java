@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zhuinden.servicetree.ServiceTree;
+import com.zhuinden.servicetreefragmentexample.injection.DaggerFirstComponent;
+import com.zhuinden.servicetreefragmentexample.injection.FirstComponent;
+import com.zhuinden.servicetreefragmentexample.injection.MainComponent;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -37,7 +40,7 @@ public class FirstFragment extends Fragment implements HasServices {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_first, container, false);
         ButterKnife.bind(this, view);
-        FirstComponent firstComponent = DaggerService.getService(Nodes.getNode(getContext(), TAG));
+        FirstComponent firstComponent = DaggerService.getService(Nodes.getNode(TAG));
         firstComponent.inject(this);
         return view;
     }

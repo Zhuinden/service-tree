@@ -5,9 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.RelativeLayout;
 
 import com.zhuinden.servicetree.ServiceTree;
+import com.zhuinden.servicetreefragmentexample.injection.ApplicationComponent;
+import com.zhuinden.servicetreefragmentexample.injection.DaggerMainComponent;
+import com.zhuinden.servicetreefragmentexample.injection.Injector;
+import com.zhuinden.servicetreefragmentexample.injection.MainComponent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +30,8 @@ public class MainActivity
 
     private ServiceTree serviceTree;
 
-    class BackstackListener implements FragmentManager.OnBackStackChangedListener {
+    class BackstackListener
+            implements FragmentManager.OnBackStackChangedListener {
         @Override
         public void onBackStackChanged() {
             List<Fragment> fragments = getSupportFragmentManager().getFragments();
@@ -35,7 +41,7 @@ public class MainActivity
             List<String> newTags = new LinkedList<>();
             for(Fragment fragment : fragments) {
                 if(fragment != null && fragment instanceof HasServices) { // active fragments is a list that can have NULL element
-                    HasServices serviceFragment = ((HasServices)fragment);
+                    HasServices serviceFragment = ((HasServices) fragment);
                     String newTag = serviceFragment.getNodeTag();
                     newTags.add(newTag);
                     registerFragmentServices(fragment);
@@ -43,6 +49,7 @@ public class MainActivity
             }
             for(String activeTag : activeTags) {
                 if(!newTags.contains(activeTag)) {
+                    Log.d(TAG, "Destroying [" + activeTag + "]");
                     serviceTree.removeNodeAndChildren(serviceTree.getNode(activeTag));
                 }
             }
@@ -52,10 +59,10 @@ public class MainActivity
 
     public void registerFragmentServices(Fragment fragment) {
         if(fragment != null && fragment instanceof HasServices) { // active fragments is a list that can have NULL element
-            HasServices serviceFragment = ((HasServices)fragment);
+            HasServices serviceFragment = ((HasServices) fragment);
             String newTag = serviceFragment.getNodeTag();
             if(!serviceTree.hasNodeWithKey(newTag)) {
-                serviceFragment.bindServices(serviceTree.createRootNode(newTag));
+                serviceFragment.bindServices(serviceTree.createChildNode(Nodes.getNode(TAG), newTag));
             }
         }
     }
@@ -65,10 +72,13 @@ public class MainActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        serviceTree = (ServiceTree)getLastCustomNonConfigurationInstance();
-        if(serviceTree == null) {
-            serviceTree = new ServiceTree();
-            serviceTree.registerRootService(DaggerService.TAG, DaggerMainComponent.create());
+        serviceTree = Injector.get().serviceTree();
+        if(!serviceTree.hasNodeWithKey(TAG)) {
+            ServiceTree.Node.Binder binder = serviceTree.createRootNode(TAG);
+            ApplicationComponent applicationComponent = DaggerService.getService(binder.get());
+            MainComponent mainComponent = DaggerService.bind(binder,
+                    DaggerMainComponent.builder().applicationComponent(applicationComponent).build());
+            mainComponent.inject(this);
         }
         super.onCreate(savedInstanceState);
 
@@ -96,24 +106,30 @@ public class MainActivity
         }
     }
 
+    public void goToSecond() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.root, new SecondFragment()).addToBackStack(null).commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(isFinishing()) {
+            serviceTree.removeNodeAndChildren(Nodes.getNode(TAG));
+        }
+    }
+
+    // share activity
     @Override
     public Object getSystemService(String name) {
         if(name.equals(TAG)) {
             return this;
-        }
-        if(name.equals(Nodes.TAG)) {
-            return serviceTree;
         }
         return super.getSystemService(name);
     }
 
     public static MainActivity get(Context context) {
         // noinspection ResourceType
-        return (MainActivity)context.getSystemService(TAG);
-    }
-
-    public void goToSecond() {
-        getSupportFragmentManager().beginTransaction().replace(R.id.root, new SecondFragment()).addToBackStack(null).commit();
+        return (MainActivity) context.getSystemService(TAG);
     }
 }
 

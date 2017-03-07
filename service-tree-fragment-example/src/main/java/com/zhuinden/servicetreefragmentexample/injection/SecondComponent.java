@@ -1,4 +1,6 @@
-package com.zhuinden.servicetreefragmentexample;
+package com.zhuinden.servicetreefragmentexample.injection;
+
+import com.zhuinden.servicetreefragmentexample.SecondFragment;
 
 import dagger.Component;
 

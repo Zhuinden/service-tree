@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zhuinden.servicetree.ServiceTree;
+import com.zhuinden.servicetreefragmentexample.injection.DaggerSecondComponent;
+import com.zhuinden.servicetreefragmentexample.injection.MainComponent;
+import com.zhuinden.servicetreefragmentexample.injection.SecondComponent;
 
 import butterknife.ButterKnife;
 
@@ -25,7 +28,7 @@ public class SecondFragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_second, container, false);
         ButterKnife.bind(this, view);
-        SecondComponent secondComponent = DaggerService.getService(Nodes.getNode(getContext(), TAG));
+        SecondComponent secondComponent = DaggerService.getService(Nodes.getNode(TAG));
         secondComponent.inject(this);
         return view;
     }

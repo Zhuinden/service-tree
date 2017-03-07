@@ -13,7 +13,8 @@ public class DaggerService {
         return node.getService(TAG);
     }
 
-    public static void bind(ServiceTree.Node.Binder binder, Object component) {
+    public static <T> T bind(ServiceTree.Node.Binder binder, T component) {
         binder.bindService(TAG, component);
+        return component;
     }
 }

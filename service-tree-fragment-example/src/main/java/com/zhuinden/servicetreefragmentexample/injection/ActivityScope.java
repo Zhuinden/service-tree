@@ -1,4 +1,4 @@
-package com.zhuinden.servicetreefragmentexample;
+package com.zhuinden.servicetreefragmentexample.injection;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -6,9 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import javax.inject.Scope;
 
 /**
- * Created by Owner on 2017. 03. 07..
+ * Created by Zhuinden on 2017.03.07..
  */
+
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FragmentScope {
+public @interface ActivityScope {
 }
