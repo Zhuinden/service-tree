@@ -34,19 +34,7 @@ public class MainActivity
             implements FragmentManager.OnBackStackChangedListener {
         @Override
         public void onBackStackChanged() {
-            List<Fragment> fragments = getSupportFragmentManager().getFragments();
-            if(fragments == null) {
-                fragments = Collections.emptyList(); // active fragments is initially NULL instead of empty list
-            }
-            List<String> newTags = new LinkedList<>();
-            for(Fragment fragment : fragments) {
-                if(fragment != null && fragment instanceof HasServices) { // active fragments is a list that can have NULL element
-                    HasServices serviceFragment = ((HasServices) fragment);
-                    String newTag = serviceFragment.getNodeTag();
-                    newTags.add(newTag);
-                    registerFragmentServices(fragment);
-                }
-            }
+            List<String> newTags = collectActiveTags();
             for(String activeTag : activeTags) {
                 if(!newTags.contains(activeTag)) {
                     Log.d(TAG, "Destroying [" + activeTag + "]");
@@ -57,8 +45,24 @@ public class MainActivity
         }
     }
 
+    private List<String> collectActiveTags() {
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        if(fragments == null) {
+            fragments = Collections.emptyList(); // active fragments is initially NULL instead of empty list
+        }
+        List<String> newTags = new LinkedList<>();
+        for(Fragment fragment : fragments) {
+            if(fragment != null && fragment instanceof HasServices) { // active fragments is a list that can have NULL element
+                HasServices serviceFragment = ((HasServices) fragment);
+                String newTag = serviceFragment.getNodeTag();
+                newTags.add(newTag);
+            }
+        }
+        return newTags;
+    }
+
     public void registerFragmentServices(Fragment fragment) {
-        if(fragment != null && fragment instanceof HasServices) { // active fragments is a list that can have NULL element
+        if(fragment != null && fragment instanceof HasServices) {
             HasServices serviceFragment = ((HasServices) fragment);
             String newTag = serviceFragment.getNodeTag();
             if(!serviceTree.hasNodeWithKey(newTag)) {
@@ -80,12 +84,15 @@ public class MainActivity
             binder.bindService(Services.DAGGER_COMPONENT, mainComponent);
             mainComponent.inject(this);
         }
+        getSupportFragmentManager().addOnBackStackChangedListener(new BackstackListener());
+
         super.onCreate(savedInstanceState);
+        if(activeTags.isEmpty() && getSupportFragmentManager().getFragments() != null) { // handle process death
+            activeTags = collectActiveTags();
+        }
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        getSupportFragmentManager().addOnBackStackChangedListener(new BackstackListener());
         if(savedInstanceState == null) {
             Fragment firstFragment = new FirstFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.root, firstFragment).addToBackStack(null).commit();
