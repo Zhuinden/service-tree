@@ -1,6 +1,10 @@
 # Service Tree
 
-It's a tree that holds a `Map<String, Object>` so that you can store your services in it for a particular key.
+It's a tree that holds a `Map<String, Object>` in each of its nodes. Therefore, it allows you to store your services in it, each node identified by a particular key.
+
+The `service-tree` is therefore a hierarchical service locator, independent from the Android platform.
+
+This is a key difference to `square/Mortar`, which utilizes `context.getSystemService()` to create the hierarchy and inheritance.
 
 You can also traverse the tree, either from top to bottom, or in reverse order from bottom to up.
 
@@ -8,7 +12,27 @@ Each Node is constructed with its services set using the `ServiceTree.Node.Binde
 
 The first level is created with `createRootNode()`, the following levels are created by `createChildNode()`.
 
-See the class and the tests for more details, it's quite short.
+Root nodes inherit root services, and child nodes inherit services from their parent node.
+
+## Creating a hierarchy
+
+### Singleton / Application
+
+You can instantiate the `ServiceTree` as a singleton in a custom application class, and register root services with `serviceTree.registerRootService(String, Object).`
+
+### Activity
+
+Activities are direct children of the root, so you can use `serviceTree.createRootNode(String nodeTag);`.
+
+### Fragment
+
+Fragments are tricky, but they are children of the Activity. Their node can be created with `serviceTree.createChildNode(Node parentNode, String childNodeTag);`
+
+## Accessing services
+
+The services you bind to a node can be accessed with `node.getService(String serviceName)`.
+
+While you're binding to a new node, you can also access the inherited services with `binder.getService(String serviceName)`.
 
 ## Using Service Tree
 
@@ -32,7 +56,7 @@ In order to use Service Tree, you need to add jitpack to your project root gradl
 
 and add the compile dependency to your module level gradle.
 
-    compile 'com.github.Zhuinden:service-tree:1.0.5'
+    compile 'com.github.Zhuinden:service-tree:1.0.6'
 
 
 ## License
