@@ -1,5 +1,9 @@
 # Change log
 
+-Service Tree 1.1.0 (2017-03-16)
+--------------------------------
+- Added `node.getChildren()`.
+
 -Service Tree 1.0.5 (2017-03-02)
 --------------------------------
 - Added Javadocs and null checks.

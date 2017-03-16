@@ -104,4 +104,28 @@ public class ServiceTreeTest {
         assertThat(child.getService("SERVICE")).isNull();
         assertThat(node.getService("SERVICE")).isNull();
     }
+
+    @Test
+    public void childrenAddedToNodeAreAccessible() {
+        TestKey rootKey = new TestKey("root");
+        TestKey test1Key = new TestKey("test1");
+        TestKey test2Key = new TestKey("test2");
+        TestKey test3Key = new TestKey("test3");
+        ServiceTree serviceTree = new ServiceTree();
+        ServiceTree.Node root = serviceTree.createRootNode(rootKey).get();
+        ServiceTree.Node test1 = serviceTree.createChildNode(root, test1Key).get();
+        assertThat(serviceTree.getNode(rootKey).getChildren()).containsExactly(test1);
+        ServiceTree.Node test2 = serviceTree.createChildNode(root, test2Key).get();
+        assertThat(serviceTree.getNode(rootKey).getChildren()).containsExactly(test1, test2);
+        ServiceTree.Node test3 = serviceTree.createChildNode(root, test3Key).get();
+        assertThat(serviceTree.getNode(rootKey).getChildren()).containsExactly(test1, test2, test3);
+
+        serviceTree.removeNodeAndChildren(test2);
+
+        List<ServiceTree.Node> children = serviceTree.getNode(rootKey).getChildren();
+        assertThat(children).containsExactly(test1, test3);
+
+        serviceTree.removeNodeAndChildren(root);
+        assertThat(children).containsExactly(test1, test3); // children are immutable
+    }
 }

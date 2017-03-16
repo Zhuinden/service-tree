@@ -41,6 +41,9 @@ public class ServiceTree {
      * A node that holds its key, its children and its bound services.
      */
     public static class Node {
+        /**
+         * An entry that contains a service by its name.
+         */
         public static class Entry {
             private String name;
             private Object service;
@@ -139,6 +142,16 @@ public class ServiceTree {
          */
         public Node getParent() {
             return parent;
+        }
+
+        /**
+         * Returns an unmodifiable list of the children bound to this node.
+         * The children are in order of insertion.
+         *
+         * @return the children of this node
+         */
+        public List<Node> getChildren() {
+            return Collections.unmodifiableList(new ArrayList<>(children));
         }
 
         private <T> T removeService(String name) {
