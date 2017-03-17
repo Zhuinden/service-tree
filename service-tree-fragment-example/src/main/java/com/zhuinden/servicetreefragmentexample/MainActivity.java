@@ -100,11 +100,6 @@ public class MainActivity
     }
 
     @Override
-    public Object onRetainCustomNonConfigurationInstance() {
-        return serviceTree;
-    }
-
-    @Override
     public void onBackPressed() {
         if(getSupportFragmentManager().getBackStackEntryCount() <= 1) {
             finish();

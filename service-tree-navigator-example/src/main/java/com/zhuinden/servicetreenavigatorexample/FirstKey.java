@@ -7,7 +7,8 @@ import com.zhuinden.navigator.StateKey;
 import com.zhuinden.navigator.ViewController;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreenavigatorexample.injection.DaggerFirstComponent;
-import com.zhuinden.servicetreenavigatorexample.injection.DaggerSecondComponent;
+import com.zhuinden.servicetreenavigatorexample.injection.FirstComponent;
+import com.zhuinden.servicetreenavigatorexample.injection.FirstModule;
 import com.zhuinden.servicetreenavigatorexample.injection.MainComponent;
 
 /**
@@ -25,13 +26,16 @@ public abstract class FirstKey
 
     @Override
     public ViewController createViewController() {
-        return new FirstController(this);
+        ServiceTree.Node node = Nodes.getNode(this);
+        FirstComponent firstComponent = node.getService(Services.DAGGER_COMPONENT);
+        return firstComponent.firstController();
     }
 
     @Override
     public void bindServices(ServiceTree.Node.Binder binder) {
         MainComponent mainComponent = binder.getService(Services.DAGGER_COMPONENT);
-        binder.bindService(Services.DAGGER_COMPONENT, DaggerFirstComponent.builder().mainComponent(mainComponent).build());
+        binder.bindService(Services.DAGGER_COMPONENT,
+                DaggerFirstComponent.builder().mainComponent(mainComponent).firstModule(new FirstModule(this)).build());
     }
 
     public static FirstKey create() {

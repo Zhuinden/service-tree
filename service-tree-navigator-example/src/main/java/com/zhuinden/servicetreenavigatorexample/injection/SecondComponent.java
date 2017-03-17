@@ -1,14 +1,17 @@
 package com.zhuinden.servicetreenavigatorexample.injection;
 
 import com.zhuinden.servicetreenavigatorexample.SecondController;
+import com.zhuinden.servicetreenavigatorexample.SecondKey;
 
 import dagger.Component;
 
 /**
  * Created by Owner on 2017. 03. 07..
  */
-@ViewScope
-@Component(dependencies = {MainComponent.class})
+@ControllerScope(SecondKey.class)
+@Component(dependencies = {MainComponent.class}, modules = {SecondModule.class})
 public interface SecondComponent {
-    void inject(SecondController secondController);
+    SecondKey secondKey();
+
+    SecondController secondController();
 }

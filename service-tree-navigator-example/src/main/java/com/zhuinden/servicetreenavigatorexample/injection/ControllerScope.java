@@ -10,5 +10,6 @@ import javax.inject.Scope;
  */
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ViewScope {
+public @interface ControllerScope {
+    Class<?> value();
 }
