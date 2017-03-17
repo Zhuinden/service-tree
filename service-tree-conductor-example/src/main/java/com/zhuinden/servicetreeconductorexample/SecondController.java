@@ -9,10 +9,8 @@ import com.bluelinelabs.conductor.Controller;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreeconductorexample.injection.ControllerScope;
 import com.zhuinden.servicetreeconductorexample.injection.DaggerSecondComponent;
-import com.zhuinden.servicetreeconductorexample.injection.SecondComponent;
 import com.zhuinden.servicetreeconductorexample.injection.MainComponent;
-
-import javax.inject.Inject;
+import com.zhuinden.servicetreeconductorexample.injection.SecondComponent;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -29,7 +27,7 @@ public class SecondController
 
     public SecondController() {
         ServiceTree serviceTree = Services.getTree();
-        ServiceTree.Node parentNode = Nodes.getNode(MainActivity.TAG);
+        ServiceTree.Node parentNode = Services.getNode(MainActivity.TAG);
         MainComponent mainComponent = parentNode.getService(Services.DAGGER_COMPONENT);
         secondComponent = DaggerSecondComponent.builder().mainComponent(mainComponent).build();
         serviceTree.createChildNode(parentNode, TAG).bindService(Services.DAGGER_COMPONENT, secondComponent);
@@ -51,5 +49,12 @@ public class SecondController
         View view = inflater.inflate(R.layout.path_second, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    protected void onDestroyView(@NonNull View view) {
+        super.onDestroyView(view);
+        unbinder.unbind();
+        unbinder = null;
     }
 }

@@ -33,7 +33,7 @@ public class FirstController
 
     public FirstController() {
         ServiceTree serviceTree = Services.getTree();
-        ServiceTree.Node parentNode = Nodes.getNode(MainActivity.TAG);
+        ServiceTree.Node parentNode = Services.getNode(MainActivity.TAG);
         MainComponent mainComponent = parentNode.getService(Services.DAGGER_COMPONENT);
         firstComponent = DaggerFirstComponent.builder().mainComponent(mainComponent).build();
         serviceTree.createChildNode(parentNode, TAG).bindService(Services.DAGGER_COMPONENT, firstComponent);
@@ -59,5 +59,12 @@ public class FirstController
         View view = inflater.inflate(R.layout.path_first, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
+    }
+
+    @Override
+    protected void onDestroyView(@NonNull View view) {
+        super.onDestroyView(view);
+        unbinder.unbind();
+        unbinder = null;
     }
 }
