@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/service-tree.iml" filepath="$PROJECT_DIR$/service-tree.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-tree-conductor-example/service-tree-conductor-example.iml" filepath="$PROJECT_DIR$/service-tree-conductor-example/service-tree-conductor-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-tree-fragment-example/service-tree-fragment-example.iml" filepath="$PROJECT_DIR$/service-tree-fragment-example/service-tree-fragment-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-tree-navigator-example/service-tree-navigator-example.iml" filepath="$PROJECT_DIR$/service-tree-navigator-example/service-tree-navigator-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-tree/service-tree-service-tree.iml" filepath="$PROJECT_DIR$/service-tree/service-tree-service-tree.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-tree-view-example/service-tree-view-example.iml" filepath="$PROJECT_DIR$/service-tree-view-example/service-tree-view-example.iml" />
+    </modules>
+  </component>
+</project>
