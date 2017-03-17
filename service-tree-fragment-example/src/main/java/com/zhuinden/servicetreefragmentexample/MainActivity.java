@@ -77,13 +77,16 @@ public class MainActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         serviceTree = Injector.get().serviceTree();
+        MainComponent mainComponent;
         if(!serviceTree.hasNodeWithKey(TAG)) {
             ServiceTree.Node.Binder binder = serviceTree.createRootNode(TAG);
             ApplicationComponent applicationComponent = binder.getService(Services.DAGGER_COMPONENT);
-            MainComponent mainComponent = DaggerMainComponent.builder().applicationComponent(applicationComponent).build();
+            mainComponent = DaggerMainComponent.builder().applicationComponent(applicationComponent).build();
             binder.bindService(Services.DAGGER_COMPONENT, mainComponent);
-            mainComponent.inject(this);
+        } else {
+            mainComponent = Services.getNode(TAG).getService(Services.DAGGER_COMPONENT);
         }
+        mainComponent.inject(this);
         getSupportFragmentManager().addOnBackStackChangedListener(new BackstackListener());
 
         super.onCreate(savedInstanceState);

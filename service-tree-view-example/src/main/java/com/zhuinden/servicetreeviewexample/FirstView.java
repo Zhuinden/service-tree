@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import com.zhuinden.servicetreeviewexample.injection.FirstComponent;
 import com.zhuinden.simplestack.Backstack;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -18,6 +20,9 @@ import butterknife.OnClick;
 public class FirstView
         extends LinearLayout {
     public static final String TAG = "FirstView";
+
+    @Inject
+    BackstackHolder backstackHolder;
 
     public FirstView(Context context) {
         super(context);
@@ -49,7 +54,7 @@ public class FirstView
 
     @OnClick(R.id.first_button)
     public void clickFirst() {
-        MainActivity.get(getContext()).goToSecond();
+        backstackHolder.getBackstack().goTo(SecondKey.create());
     }
 
     @Override

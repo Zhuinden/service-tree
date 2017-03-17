@@ -2,6 +2,7 @@ package com.zhuinden.servicetreenavigatorexample;
 
 import android.view.View;
 
+import com.zhuinden.navigator.Navigator;
 import com.zhuinden.navigator.ViewController;
 import com.zhuinden.servicetreenavigatorexample.injection.ControllerScope;
 
@@ -24,7 +25,7 @@ public class FirstController
 
     @OnClick(R.id.first_button)
     public void clickFirst(View view) {
-        MainActivity.get(view.getContext()).goToSecond();
+        Navigator.getBackstack(view.getContext()).goTo(SecondKey.create());
     }
 
     Unbinder unbinder;

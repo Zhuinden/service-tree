@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bluelinelabs.conductor.Controller;
+import com.bluelinelabs.conductor.RouterTransaction;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreeconductorexample.injection.ControllerScope;
 import com.zhuinden.servicetreeconductorexample.injection.DaggerFirstComponent;
@@ -48,7 +49,7 @@ public class FirstController
 
     @OnClick(R.id.first_button)
     public void clickFirst(View view) {
-        MainActivity.get(view.getContext()).goToSecond();
+        getRouter().pushController(RouterTransaction.with(new SecondController()));
     }
 
     Unbinder unbinder;
