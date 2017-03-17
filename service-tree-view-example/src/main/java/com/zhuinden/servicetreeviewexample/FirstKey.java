@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import com.google.auto.value.AutoValue;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreeviewexample.injection.DaggerFirstComponent;
-import com.zhuinden.servicetreeviewexample.injection.DaggerSecondComponent;
 import com.zhuinden.servicetreeviewexample.injection.MainComponent;
 
 /**
@@ -17,11 +16,6 @@ public abstract class FirstKey implements Key, Parcelable {
     @Override
     public int layout() {
         return R.layout.path_first;
-    }
-
-    @Override
-    public String getNodeTag() {
-        return toString();
     }
 
     @Override
