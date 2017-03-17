@@ -28,7 +28,7 @@ public class SecondFragment
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_second, container, false);
         ButterKnife.bind(this, view);
-        SecondComponent secondComponent = Nodes.getNode(TAG).getService(Services.DAGGER_COMPONENT);
+        SecondComponent secondComponent = Services.getNode(TAG).getService(Services.DAGGER_COMPONENT);
         secondComponent.inject(this);
         return view;
     }

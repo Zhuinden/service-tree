@@ -26,7 +26,7 @@ public abstract class FirstKey
 
     @Override
     public ViewController createViewController() {
-        ServiceTree.Node node = Nodes.getNode(this);
+        ServiceTree.Node node = Services.getNode(this);
         FirstComponent firstComponent = node.getService(Services.DAGGER_COMPONENT);
         return firstComponent.firstController();
     }

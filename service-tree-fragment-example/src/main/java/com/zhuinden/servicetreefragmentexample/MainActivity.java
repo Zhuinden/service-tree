@@ -66,7 +66,7 @@ public class MainActivity
             HasServices serviceFragment = ((HasServices) fragment);
             String newTag = serviceFragment.getNodeTag();
             if(!serviceTree.hasNodeWithKey(newTag)) {
-                serviceFragment.bindServices(serviceTree.createChildNode(Nodes.getNode(TAG), newTag));
+                serviceFragment.bindServices(serviceTree.createChildNode(Services.getNode(TAG), newTag));
             }
         }
     }
@@ -116,7 +116,7 @@ public class MainActivity
     protected void onDestroy() {
         super.onDestroy();
         if(isFinishing()) {
-            serviceTree.removeNodeAndChildren(Nodes.getNode(TAG));
+            serviceTree.removeNodeAndChildren(Services.getNode(TAG));
         }
     }
 

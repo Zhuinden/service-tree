@@ -26,7 +26,7 @@ public abstract class SecondKey
 
     @Override
     public ViewController createViewController() {
-        ServiceTree.Node node = Nodes.getNode(this);
+        ServiceTree.Node node = Services.getNode(this);
         SecondComponent secondComponent = node.getService(Services.DAGGER_COMPONENT);
         return secondComponent.secondController();
     }

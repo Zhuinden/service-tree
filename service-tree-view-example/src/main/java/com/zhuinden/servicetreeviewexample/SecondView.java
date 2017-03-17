@@ -2,18 +2,9 @@ package com.zhuinden.servicetreeviewexample;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.zhuinden.servicetree.ServiceTree;
-import com.zhuinden.servicetreeviewexample.injection.DaggerSecondComponent;
-import com.zhuinden.servicetreeviewexample.injection.MainComponent;
 import com.zhuinden.servicetreeviewexample.injection.SecondComponent;
 import com.zhuinden.simplestack.Backstack;
 
@@ -49,7 +40,7 @@ public class SecondView
 
     private void init(Context context) {
         if(!isInEditMode()) {
-            SecondComponent secondComponent = Nodes.getNode(Backstack.getKey(getContext())).getService(Services.DAGGER_COMPONENT);
+            SecondComponent secondComponent = Services.getNode(Backstack.getKey(getContext())).getService(Services.DAGGER_COMPONENT);
             secondComponent.inject(this);
         }
     }
