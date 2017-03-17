@@ -10,6 +10,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/service-tree" />
             <option value="$PROJECT_DIR$/service-tree-fragment-example" />
+            <option value="$PROJECT_DIR$/service-tree-navigator-example" />
+            <option value="$PROJECT_DIR$/service-tree-view-example" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="simple-stack-1.4.1">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/service-tree-view-example/build/intermediates/exploded-aar/com.github.Zhuinden/simple-stack/1.4.1/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/service-tree-navigator-example/build/intermediates/exploded-aar/com.github.Zhuinden/simple-stack/1.4.1/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/service-tree-view-example/build/intermediates/exploded-aar/com.github.Zhuinden/simple-stack/1.4.1/res" />
+      <root url="jar://$PROJECT_DIR$/service-tree-view-example/build/intermediates/exploded-aar/com.github.Zhuinden/simple-stack/1.4.1/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Zhuinden/simple-stack/1.4.1/fd056ebe6c9e0bd58c14b9cdaa4084d18db8d503/simple-stack-1.4.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Zhuinden/simple-stack/1.4.1/fd056ebe6c9e0bd58c14b9cdaa4084d18db8d503/simple-stack-1.4.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
