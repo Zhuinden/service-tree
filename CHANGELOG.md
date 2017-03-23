@@ -1,5 +1,9 @@
 # Change log
 
+-Service Tree 1.1.1 (2017-03-23)
+--------------------------------
+- Decrease minSDK to 1.
+
 -Service Tree 1.1.0 (2017-03-16)
 --------------------------------
 - Added `node.getChildren()`.
