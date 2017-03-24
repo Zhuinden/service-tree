@@ -369,12 +369,12 @@ public class ServiceTree {
     }
 
     /**
-     * Returns the root node.
+     * Returns the root node of the tree.
      *
-     * @return the root
+     * @return the root node of the tree
      */
     @NonNull
-    public Node getRootNode() {
+    public Node getTreeRoot() {
         return root;
     }
 
