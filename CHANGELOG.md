@@ -1,5 +1,9 @@
 # Change log
 
+-Service Tree 1.2.1 (2017-03-24)
+--------------------------------
+- Add `getKeys()` method.
+
 -Service Tree 1.2.0 (2017-03-24)
 --------------------------------
 - BREAKING CHANGE: Remove `Node.Binder`. It was actually just an unnecessary wrapper around the `Node`.

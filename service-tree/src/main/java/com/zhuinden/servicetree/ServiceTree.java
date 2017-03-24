@@ -379,6 +379,16 @@ public class ServiceTree {
     }
 
     /**
+     * Return the keys of the registered nodes.
+     *
+     * @return an unmodifiable set of a copy of the currently registered nodes' keys
+     */
+    @NonNull
+    public Set<Object> getKeys() {
+        return Collections.unmodifiableSet(new LinkedHashSet<>(nodeMap.keySet()));
+    }
+
+    /**
      * Adds a service to the node of the tree root.
      *
      * @param name    the name of the service
