@@ -1,5 +1,11 @@
 # Change log
 
+-Service Tree 1.2.0 (2017-03-24)
+--------------------------------
+- BREAKING CHANGE: Remove `Node.Binder`. It was actually just an unnecessary wrapper around the `Node`.
+
+Therefore, any code using `Node.Binder binder` can be replaced with `Node node`.
+
 -Service Tree 1.1.1 (2017-03-23)
 --------------------------------
 - Decrease minSDK to 1.

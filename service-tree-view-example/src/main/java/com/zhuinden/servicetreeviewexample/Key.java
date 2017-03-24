@@ -11,5 +11,5 @@ import com.zhuinden.servicetree.ServiceTree;
 public interface Key {
     @LayoutRes int layout();
 
-    void bindServices(ServiceTree.Node.Binder binder);
+    void bindServices(ServiceTree.Node node);
 }

@@ -8,7 +8,7 @@ This is a key difference to `square/Mortar`, which utilizes `context.getSystemSe
 
 You can also traverse the tree, either from top to bottom, or in reverse order from bottom to up.
 
-Each Node is constructed with its services set using the `ServiceTree.Node.Binder` returned by `serviceTree.createNode()`.
+Each Node is constructed with `serviceTree.createNode()`, and services can be bound to it using `node.bindService(String, Object)`.
 
 The first level is created with `createRootNode()`, the following levels are created by `createChildNode()`.
 
@@ -32,7 +32,7 @@ Fragments are tricky, but they are children of the Activity. Their node can be c
 
 The services you bind to a node can be accessed with `node.getService(String serviceName)`.
 
-While you're binding to a new node, you can also access the inherited services with `binder.getService(String serviceName)`.
+While you're binding to a new node, you can also access the inherited services with `node.getService(String serviceName)`.
 
 ## Using Service Tree
 
@@ -56,7 +56,7 @@ In order to use Service Tree, you need to add jitpack to your project root gradl
 
 and add the compile dependency to your module level gradle.
 
-    compile 'com.github.Zhuinden:service-tree:1.1.1'
+    compile 'com.github.Zhuinden:service-tree:1.2.0'
 
 
 ## License

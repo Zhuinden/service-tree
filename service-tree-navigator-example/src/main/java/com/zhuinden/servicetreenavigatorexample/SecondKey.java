@@ -32,9 +32,9 @@ public abstract class SecondKey
     }
 
     @Override
-    public void bindServices(ServiceTree.Node.Binder binder) {
-        MainComponent mainComponent = binder.getService(Services.DAGGER_COMPONENT);
-        binder.bindService(Services.DAGGER_COMPONENT,
+    public void bindServices(ServiceTree.Node node) {
+        MainComponent mainComponent = node.getService(Services.DAGGER_COMPONENT);
+        node.bindService(Services.DAGGER_COMPONENT,
                 DaggerSecondComponent.builder().mainComponent(mainComponent).secondModule(new SecondModule(this)).build());
     }
 

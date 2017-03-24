@@ -48,10 +48,10 @@ public class MainActivity
         serviceTree = Injector.get().serviceTree();
         MainComponent mainComponent;
         if(!serviceTree.hasNodeWithKey(TAG)) {
-            ServiceTree.Node.Binder binder = serviceTree.createRootNode(TAG);
-            ApplicationComponent applicationComponent = binder.getService(Services.DAGGER_COMPONENT);
+            ServiceTree.Node node = serviceTree.createRootNode(TAG);
+            ApplicationComponent applicationComponent = node.getService(Services.DAGGER_COMPONENT);
             mainComponent = DaggerMainComponent.builder().applicationComponent(applicationComponent).build();
-            binder.bindService(Services.DAGGER_COMPONENT, mainComponent);
+            node.bindService(Services.DAGGER_COMPONENT, mainComponent);
         } else {
             mainComponent = Services.getNode(TAG).getService(Services.DAGGER_COMPONENT);
         }

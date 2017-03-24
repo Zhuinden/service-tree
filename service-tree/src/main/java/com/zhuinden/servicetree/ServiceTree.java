@@ -126,8 +126,16 @@ public class ServiceTree {
             return entries;
         }
 
-        void addService(String name, Object service) {
+        @NonNull
+        public Node bindService(@NonNull String name, @NonNull Object service) {
+            if(name == null) {
+                throw new NullPointerException("Name cannot be null!");
+            }
+            if(service == null) {
+                throw new NullPointerException("Service cannot be null!");
+            }
             services.put(name, service);
+            return this;
         }
 
         void execute(Walk walk) {
@@ -154,66 +162,9 @@ public class ServiceTree {
             return Collections.unmodifiableList(new ArrayList<>(children));
         }
 
-        private <T> T removeService(String name) {
+        <T> T removeService(String name) {
             // noinspection unchecked
             return (T) services.remove(name);
-        }
-
-        /**
-         * Enables binding services into the node.
-         *
-         * It is not a builder, the internal node is modified directly.
-         */
-        public static class Binder {
-            private Node node;
-
-            Binder(Object localKey, ServiceTree serviceTree, Node parent) {
-                node = new Node(parent, localKey);
-                parent.children.add(node);
-                serviceTree.addNode(node);
-            }
-
-            /**
-             * Obtains service from the created node. If not found, it tries to look in its parent, and so on.
-             *
-             * @param name The name of the service
-             * @return the service, or null if not found
-             */
-            @Nullable
-            public <T> T getService(@NonNull String name) {
-                if(name == null) {
-                    throw new NullPointerException("Name cannot be null!");
-                }
-                return node.getService(name);
-            }
-
-            /**
-             * Binds the given service by the given name to this given node.
-             *
-             * @param name    The name of the service
-             * @param service The service
-             * @return the current binder
-             */
-            @NonNull
-            public Binder bindService(@NonNull String name, @NonNull Object service) {
-                if(name == null) {
-                    throw new NullPointerException("Name cannot be null!");
-                }
-                if(service == null) {
-                    throw new NullPointerException("Service cannot be null!");
-                }
-                node.addService(name, service);
-                return this;
-            }
-
-            /**
-             * Obtains the node this binder is able to bind services to.
-             *
-             * @return the node
-             */
-            public Node get() {
-                return node;
-            }
         }
 
         @Override
@@ -290,12 +241,12 @@ public class ServiceTree {
      * Creates a node that is the direct child of the root in the tree, and otherwise has no parent.
      *
      * @param nodeKey the key that identifies the node
-     * @return the {@link Node.Binder} to bind services with
+     * @return the {@link Node} to bind services to
      */
     @NonNull
-    public Node.Binder createRootNode(@NonNull Object nodeKey) {
+    public Node createRootNode(@NonNull Object nodeKey) {
         checkKey(nodeKey);
-        return new Node.Binder(nodeKey, this, root);
+        return createChildNode(root, nodeKey);
     }
 
     /**
@@ -304,13 +255,16 @@ public class ServiceTree {
      *
      * @param parentNode the parent node this node is the child of
      * @param nodeKey    the key that identifies the child node
-     * @return the {@link Node.Binder} to bind services with
+     * @return the {@link Node} to bind services to
      */
     @NonNull
-    public Node.Binder createChildNode(@NonNull Node parentNode, @NonNull Object nodeKey) {
+    public Node createChildNode(@NonNull Node parentNode, @NonNull Object nodeKey) {
         checkNode(parentNode);
         checkKey(nodeKey);
-        return new Node.Binder(nodeKey, this, parentNode);
+        Node node = new Node(parentNode, nodeKey);
+        parentNode.children.add(node);
+        this.addNode(node);
+        return node;
     }
 
     private void checkNode(Node node) {
@@ -402,18 +356,6 @@ public class ServiceTree {
         }
     }
 
-    /**
-     * Adds a service to the node of the tree root.
-     *
-     * @param name    the name of the service
-     * @param service the service
-     */
-    public void registerRootService(@NonNull String name, @NonNull Object service) {
-        checkName(name);
-        checkService(name);
-        root.addService(name, service);
-    }
-
     private void checkService(Object service) {
         if(service == null) {
             throw new NullPointerException("Service cannot be null!");
@@ -424,6 +366,28 @@ public class ServiceTree {
         if(name == null) {
             throw new NullPointerException("Name cannot be null!");
         }
+    }
+
+    /**
+     * Returns the root node.
+     *
+     * @return the root
+     */
+    @NonNull
+    public Node getRootNode() {
+        return root;
+    }
+
+    /**
+     * Adds a service to the node of the tree root.
+     *
+     * @param name    the name of the service
+     * @param service the service
+     */
+    public void registerRootService(@NonNull String name, @NonNull Object service) {
+        checkName(name);
+        checkService(name);
+        root.bindService(name, service);
     }
 
     /**

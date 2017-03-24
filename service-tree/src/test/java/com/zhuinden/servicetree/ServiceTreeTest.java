@@ -15,7 +15,7 @@ public class ServiceTreeTest {
     public void addingToRootWorks() {
         TestKey testKey = new TestKey("root");
         ServiceTree serviceTree = new ServiceTree();
-        ServiceTree.Node node = serviceTree.createRootNode(testKey).get();
+        ServiceTree.Node node = serviceTree.createRootNode(testKey);
 
         assertThat(serviceTree.hasNodeWithKey(testKey)).isTrue();
         assertThat(serviceTree.getNode(testKey)).isSameAs(node);
@@ -30,8 +30,8 @@ public class ServiceTreeTest {
         TestKey testKey = new TestKey("root");
         TestKey childKey = new TestKey("childKey");
         ServiceTree serviceTree = new ServiceTree();
-        ServiceTree.Node parent = serviceTree.createRootNode(testKey).get();
-        ServiceTree.Node child = serviceTree.createChildNode(serviceTree.getNode(testKey), childKey).get();
+        ServiceTree.Node parent = serviceTree.createRootNode(testKey);
+        ServiceTree.Node child = serviceTree.createChildNode(serviceTree.getNode(testKey), childKey);
         assertThat(child.getParent()).isSameAs(parent);
         assertThat(child.getKey()).isSameAs(childKey);
 
@@ -45,7 +45,7 @@ public class ServiceTreeTest {
         TestKey rootKey = new TestKey("root");
         Object service = new Object();
         ServiceTree serviceTree = new ServiceTree();
-        ServiceTree.Node node = serviceTree.createRootNode(rootKey).bindService("SERVICE", service).get();
+        ServiceTree.Node node = serviceTree.createRootNode(rootKey).bindService("SERVICE", service);
         List<ServiceTree.Node.Entry> entries = node.getBoundServices();
         boolean didFind = false;
         for(ServiceTree.Node.Entry entry : entries) {
@@ -64,11 +64,10 @@ public class ServiceTreeTest {
         TestKey childKey = new TestKey("child");
         Object service = new Object();
         ServiceTree serviceTree = new ServiceTree();
-        ServiceTree.Node node = serviceTree.createRootNode(rootKey).bindService("SERVICE", service).get();
-        ServiceTree.Node.Binder childBinder = serviceTree.createChildNode(node, childKey);
-        ServiceTree.Node child = childBinder.get();
+        ServiceTree.Node node = serviceTree.createRootNode(rootKey).bindService("SERVICE", service);
+        ServiceTree.Node child = serviceTree.createChildNode(node, childKey);
 
-        assertThat(childBinder.getService("SERVICE")).isSameAs(service);
+        assertThat(child.getService("SERVICE")).isSameAs(service);
         assertThat(child.getService("SERVICE")).isSameAs(service);
     }
 
@@ -76,7 +75,7 @@ public class ServiceTreeTest {
     public void rootCannotBeRemoved() {
         TestKey rootKey = new TestKey("root");
         ServiceTree serviceTree = new ServiceTree();
-        ServiceTree.Node node = serviceTree.createRootNode(rootKey).get();
+        ServiceTree.Node node = serviceTree.createRootNode(rootKey);
         serviceTree.removeAllNodes();
 
         assertThat(serviceTree.hasNodeWithKey(ServiceTree.ROOT_KEY)).isTrue();
@@ -89,9 +88,8 @@ public class ServiceTreeTest {
         TestKey childKey = new TestKey("child");
         Object service = new Object();
         ServiceTree serviceTree = new ServiceTree();
-        ServiceTree.Node node = serviceTree.createRootNode(rootKey).get();
-        ServiceTree.Node.Binder childBinder = serviceTree.createChildNode(node, childKey);
-        ServiceTree.Node child = childBinder.get();
+        ServiceTree.Node node = serviceTree.createRootNode(rootKey);
+        ServiceTree.Node child = serviceTree.createChildNode(node, childKey);
 
         serviceTree.registerRootService("SERVICE", service);
 
@@ -112,12 +110,12 @@ public class ServiceTreeTest {
         TestKey test2Key = new TestKey("test2");
         TestKey test3Key = new TestKey("test3");
         ServiceTree serviceTree = new ServiceTree();
-        ServiceTree.Node root = serviceTree.createRootNode(rootKey).get();
-        ServiceTree.Node test1 = serviceTree.createChildNode(root, test1Key).get();
+        ServiceTree.Node root = serviceTree.createRootNode(rootKey);
+        ServiceTree.Node test1 = serviceTree.createChildNode(root, test1Key);
         assertThat(serviceTree.getNode(rootKey).getChildren()).containsExactly(test1);
-        ServiceTree.Node test2 = serviceTree.createChildNode(root, test2Key).get();
+        ServiceTree.Node test2 = serviceTree.createChildNode(root, test2Key);
         assertThat(serviceTree.getNode(rootKey).getChildren()).containsExactly(test1, test2);
-        ServiceTree.Node test3 = serviceTree.createChildNode(root, test3Key).get();
+        ServiceTree.Node test3 = serviceTree.createChildNode(root, test3Key);
         assertThat(serviceTree.getNode(rootKey).getChildren()).containsExactly(test1, test2, test3);
 
         serviceTree.removeNodeAndChildren(test2);

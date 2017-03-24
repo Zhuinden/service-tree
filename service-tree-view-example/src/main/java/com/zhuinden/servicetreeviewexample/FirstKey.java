@@ -19,9 +19,9 @@ public abstract class FirstKey implements Key, Parcelable {
     }
 
     @Override
-    public void bindServices(ServiceTree.Node.Binder binder) {
-        MainComponent mainComponent = binder.getService(Services.DAGGER_COMPONENT);
-        binder.bindService(Services.DAGGER_COMPONENT, DaggerFirstComponent.builder().mainComponent(mainComponent).build());
+    public void bindServices(ServiceTree.Node node) {
+        MainComponent mainComponent = node.getService(Services.DAGGER_COMPONENT);
+        node.bindService(Services.DAGGER_COMPONENT, DaggerFirstComponent.builder().mainComponent(mainComponent).build());
     }
 
     public static FirstKey create() {

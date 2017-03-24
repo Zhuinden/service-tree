@@ -53,18 +53,18 @@ public class TraversalTest {
 
         serviceTree = new ServiceTree();
 
-        root1Node = serviceTree.createRootNode(root1).get();
-        child1ANode = serviceTree.createChildNode(root1Node, child1A).get();
-        child1BNode = serviceTree.createChildNode(root1Node, child1B).get();
+        root1Node = serviceTree.createRootNode(root1);
+        child1ANode = serviceTree.createChildNode(root1Node, child1A);
+        child1BNode = serviceTree.createChildNode(root1Node, child1B);
 
-        root2Node = serviceTree.createRootNode(root2).get();
-        child2ANode = serviceTree.createChildNode(root2Node, child2A).get();
-        child2BNode = serviceTree.createChildNode(root2Node, child2B).get();
+        root2Node = serviceTree.createRootNode(root2);
+        child2ANode = serviceTree.createChildNode(root2Node, child2A);
+        child2BNode = serviceTree.createChildNode(root2Node, child2B);
 
-        child1A1Node = serviceTree.createChildNode(child1ANode, child1A1).get();
-        child1A2Node = serviceTree.createChildNode(child1ANode, child1A2).get();
-        child1B1Node = serviceTree.createChildNode(child1BNode, child1B1).get();
-        child1B2Node = serviceTree.createChildNode(child1BNode, child1B2).get();
+        child1A1Node = serviceTree.createChildNode(child1ANode, child1A1);
+        child1A2Node = serviceTree.createChildNode(child1ANode, child1A2);
+        child1B1Node = serviceTree.createChildNode(child1BNode, child1B1);
+        child1B2Node = serviceTree.createChildNode(child1BNode, child1B2);
     }
 
     @Test

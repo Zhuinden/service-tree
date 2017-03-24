@@ -9,5 +9,5 @@ import com.zhuinden.servicetree.ServiceTree;
 public interface HasServices {
     String getNodeTag();
 
-    void bindServices(ServiceTree.Node.Binder binder);
+    void bindServices(ServiceTree.Node node);
 }
