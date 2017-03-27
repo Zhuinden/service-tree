@@ -56,7 +56,7 @@ In order to use Service Tree, you need to add jitpack to your project root gradl
 
 and add the compile dependency to your module level gradle.
 
-    compile 'com.github.Zhuinden:service-tree:1.2.1'
+    compile 'com.github.Zhuinden:service-tree:1.2.2'
 
 
 ## License

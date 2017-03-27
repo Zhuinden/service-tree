@@ -65,15 +65,18 @@ public class ServiceTree {
             }
         }
 
-        private Node parent;
+        private final ServiceTree serviceTree;
 
-        private Object localKey;
+        private final Node parent;
 
-        private Set<Node> children = new LinkedHashSet<>();
+        private final Object localKey;
 
-        private Map<String, Object> services = new LinkedHashMap<>();
+        private final Set<Node> children = new LinkedHashSet<>();
 
-        Node(Node parent, Object key) {
+        private final Map<String, Object> services = new LinkedHashMap<>();
+
+        Node(ServiceTree serviceTree, Node parent, Object key) {
+            this.serviceTree = serviceTree;
             this.parent = parent;
             this.localKey = key;
         }
@@ -143,6 +146,15 @@ public class ServiceTree {
         }
 
         /**
+         * Returns the {@link ServiceTree} this {@link ServiceTree.Node} belongs to.
+         *
+         * @return the tree
+         */
+        public ServiceTree getTree() {
+            return serviceTree;
+        }
+
+        /**
          * Returns the parent of this node.
          * Null only for the `root` key of the service tree, that all other root keys are appended to as children.
          *
@@ -208,7 +220,7 @@ public class ServiceTree {
         }
     }
 
-    private Node root = new Node(null, ROOT_KEY);
+    private Node root = new Node(this, null, ROOT_KEY);
 
     private Map<Object, Node> nodeMap = new LinkedHashMap<>();
 
@@ -261,7 +273,7 @@ public class ServiceTree {
     public Node createChildNode(@NonNull Node parentNode, @NonNull Object nodeKey) {
         checkNode(parentNode);
         checkKey(nodeKey);
-        Node node = new Node(parentNode, nodeKey);
+        Node node = new Node(this, parentNode, nodeKey);
         parentNode.children.add(node);
         this.addNode(node);
         return node;

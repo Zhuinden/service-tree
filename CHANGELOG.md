@@ -1,8 +1,12 @@
 # Change log
 
+-Service Tree 1.2.2 (2017-03-27)
+--------------------------------
+- Add `Node.getTree()` method.
+
 -Service Tree 1.2.1 (2017-03-24)
 --------------------------------
-- Add `getKeys()` method.
+- Add `ServiceTree.getKeys()` method.
 
 -Service Tree 1.2.0 (2017-03-24)
 --------------------------------

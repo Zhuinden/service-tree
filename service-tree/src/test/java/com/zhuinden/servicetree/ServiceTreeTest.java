@@ -21,6 +21,9 @@ public class ServiceTreeTest {
         assertThat(serviceTree.getNode(testKey)).isSameAs(node);
         assertThat(serviceTree.getNode(testKey).getKey()).isSameAs(testKey);
 
+        assertThat(node.getTree()).isSameAs(serviceTree);
+        assertThat(serviceTree.getKeys()).contains(serviceTree.getTreeRoot().getKey(), node.getKey());
+
         serviceTree.removeNodeAndChildren(node);
         assertThat(serviceTree.hasNodeWithKey(testKey)).isFalse();
     }
