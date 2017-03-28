@@ -1,5 +1,7 @@
 package com.zhuinden.servicetree;
 
+import android.support.annotation.NonNull;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -99,6 +101,40 @@ public class TraversalTest {
             }
         });
         assertThat(nodes).containsExactly(child2BNode, child2ANode, root2Node,
-                child1B2Node, child1B1Node, child1BNode, child1A2Node, child1A1Node, child1ANode, root1Node, serviceTree.getNode(ServiceTree.ROOT_KEY));
+                child1B2Node,
+                child1B1Node,
+                child1BNode,
+                child1A2Node,
+                child1A1Node,
+                child1ANode,
+                root1Node,
+                serviceTree.getTreeRoot());
+    }
+
+    @Test
+    public void traverseChainWorksAsIntended() {
+        final List<ServiceTree.Node> nodes = new LinkedList<>();
+        serviceTree.traverseChain(child1B2Node, new ServiceTree.ChainWalk() {
+            @Override
+            public void execute(@NonNull ServiceTree.Node node, @NonNull CancellationToken cancellationToken) {
+                nodes.add(node);
+            }
+        });
+        assertThat(nodes).containsExactly(child1B2Node, child1BNode, root1Node, serviceTree.getTreeRoot());
+    }
+
+    @Test
+    public void traverseChainCancelWorksAsIntended() {
+        final List<ServiceTree.Node> nodes = new LinkedList<>();
+        serviceTree.traverseChain(child1B2Node, new ServiceTree.ChainWalk() {
+            @Override
+            public void execute(@NonNull ServiceTree.Node node, @NonNull CancellationToken cancellationToken) {
+                nodes.add(node);
+                if(node == child1BNode) {
+                    cancellationToken.cancel();
+                }
+            }
+        });
+        assertThat(nodes).containsExactly(child1B2Node, child1BNode);
     }
 }

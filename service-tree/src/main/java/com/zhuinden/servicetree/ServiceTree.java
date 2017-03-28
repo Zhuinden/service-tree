@@ -145,6 +145,10 @@ public class ServiceTree {
             walk.execute(this);
         }
 
+        void execute(ChainWalk chainWalk, ChainWalk.CancellationToken cancellationToken) {
+            chainWalk.execute(this, cancellationToken);
+        }
+
         /**
          * Returns the {@link ServiceTree} this {@link ServiceTree.Node} belongs to.
          *
@@ -368,6 +372,49 @@ public class ServiceTree {
         }
     }
 
+    /**
+     * Traversing the chain from the node through its parents, including the root.
+     *
+     * @param node The node that begins the chain traversal towards its parent.
+     */
+    public void traverseChain(@NonNull Node node, @NonNull ChainWalk chainWalk) {
+        checkNode(node);
+        checkChainWalk(chainWalk);
+
+        class Cancellation {
+            private boolean cancelled;
+
+            private boolean isCancelled() {
+                return cancelled;
+            }
+
+            private void cancel() {
+                this.cancelled = true;
+            }
+        }
+        final Cancellation cancellation = new Cancellation();
+        ChainWalk.CancellationToken cancellationToken = new ChainWalk.CancellationToken() {
+            @Override
+            public void cancel() {
+                cancellation.cancel();
+            }
+        };
+        Node currentNode = node;
+        while(currentNode != null) {
+            currentNode.execute(chainWalk, cancellationToken);
+            currentNode = currentNode.getParent();
+            if(cancellation.isCancelled()) {
+                break;
+            }
+        }
+    }
+
+    private void checkChainWalk(ChainWalk chainWalk) {
+        if(chainWalk == null) {
+            throw new NullPointerException("chainWalk cannot be null!");
+        }
+    }
+
     private void checkService(Object service) {
         if(service == null) {
             throw new NullPointerException("Service cannot be null!");
@@ -458,5 +505,22 @@ public class ServiceTree {
          * Begins from the bottom right child, and walks upwards the tree, and ends with the specified node.
          */
         int POST_ORDER = 2;
+    }
+
+    /**
+     * The operation that is executed for each node in a chain during {@link ServiceTree#traverseChain(Node, ChainWalk)}.
+     */
+    public interface ChainWalk {
+        /**
+         * Can be used to cancel the chain walk.
+         */
+        interface CancellationToken {
+            /**
+             * Cancels the chain walk.
+             */
+            void cancel();
+        }
+
+        void execute(@NonNull Node node, @NonNull CancellationToken cancellationToken);
     }
 }

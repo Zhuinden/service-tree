@@ -1,5 +1,9 @@
 # Change log
 
+-Service Tree 1.2.3 (2017-03-28)
+--------------------------------
+- Add `ServiceTree.traverseChain(Node, ChainWalk)` method. It allows traversing the chain from a particular node through all its parents.
+
 -Service Tree 1.2.2 (2017-03-27)
 --------------------------------
 - Add `Node.getTree()` method.
