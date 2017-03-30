@@ -59,6 +59,7 @@ public class ServiceTreeTest {
         }
         assertThat(didFind).isTrue();
         assertThat(node.getService("SERVICE")).isSameAs(service);
+        assertThat(node.hasBoundService("SERVICE")).isTrue();
     }
 
     @Test
@@ -70,8 +71,11 @@ public class ServiceTreeTest {
         ServiceTree.Node node = serviceTree.createRootNode(rootKey).bindService("SERVICE", service);
         ServiceTree.Node child = serviceTree.createChildNode(node, childKey);
 
+        assertThat(node.hasBoundService("SERVICE")).isTrue();
+        assertThat(child.hasBoundService("SERVICE")).isFalse();
         assertThat(child.getService("SERVICE")).isSameAs(service);
         assertThat(child.getService("SERVICE")).isSameAs(service);
+
     }
 
     @Test
@@ -99,11 +103,23 @@ public class ServiceTreeTest {
         assertThat(child.getService("SERVICE")).isSameAs(service);
         assertThat(node.getService("SERVICE")).isSameAs(service);
 
+        assertThat(child.hasService("SERVICE")).isTrue();
+        assertThat(node.hasService("SERVICE")).isTrue();
         assertThat(serviceTree.getRootService("SERVICE")).isSameAs(service);
         assertThat(serviceTree.unregisterRootService("SERVICE")).isSameAs(service);
 
-        assertThat(child.getService("SERVICE")).isNull();
-        assertThat(node.getService("SERVICE")).isNull();
+        try {
+            child.getService("SERVICE");
+        } catch(IllegalArgumentException e) {
+            // OK!
+            assertThat(child.hasService("SERVICE")).isFalse();
+        }
+        try {
+            node.getService("SERVICE");
+        } catch(IllegalArgumentException e) {
+            // OK!
+            assertThat(node.hasService("SERVICE")).isFalse();
+        }
     }
 
     @Test
@@ -128,5 +144,90 @@ public class ServiceTreeTest {
 
         serviceTree.removeNodeAndChildren(root);
         assertThat(children).containsExactly(test1, test3); // children are immutable
+    }
+
+    @Test
+    public void walkCannotBeNull() {
+        ServiceTree serviceTree = new ServiceTree();
+        try {
+            serviceTree.traverseTree(ServiceTree.Walk.POST_ORDER, null);
+        } catch(NullPointerException e) {
+            // OK!
+        }
+    }
+
+    @Test
+    public void serviceCannotBeNull() {
+        TestKey rootKey = new TestKey("root");
+        ServiceTree serviceTree = new ServiceTree();
+        ServiceTree.Node root = serviceTree.createRootNode(rootKey);
+        try {
+            root.bindService("SERVICE", null);
+        } catch(NullPointerException e) {
+            // OK!
+        }
+    }
+
+    @Test
+    public void rootServiceCannotBeNull() {
+        ServiceTree serviceTree = new ServiceTree();
+        try {
+            serviceTree.registerRootService("SERVICE", null);
+        } catch(NullPointerException e) {
+            // OK!
+        }
+    }
+
+    @Test
+    public void nodeCannotBeNonexistent() {
+        ServiceTree serviceTree = new ServiceTree();
+        assertThat(serviceTree.hasNodeWithKey("notintree")).isFalse();
+        try {
+            serviceTree.getNode("notintree");
+        } catch(IllegalStateException e) {
+            // OK!
+        }
+    }
+
+    @Test
+    public void rootServiceNameCannotBeNull() {
+        ServiceTree serviceTree = new ServiceTree();
+        try {
+            serviceTree.registerRootService(null, new Object());
+        } catch(NullPointerException e) {
+            // OK!
+        }
+    }
+
+    @Test
+    public void serviceNameCannotBeNull() {
+        TestKey rootKey = new TestKey("root");
+        ServiceTree serviceTree = new ServiceTree();
+        ServiceTree.Node root = serviceTree.createRootNode(rootKey);
+        try {
+            root.hasService(null);
+        } catch(NullPointerException e) {
+            // OK!
+        }
+    }
+
+    @Test
+    public void keyCannotBeNull() {
+        ServiceTree serviceTree = new ServiceTree();
+        try {
+            serviceTree.hasNodeWithKey(null);
+        } catch(NullPointerException e) {
+            // OK!
+        }
+    }
+
+    @Test
+    public void nodeCannotBeNull() {
+        ServiceTree serviceTree = new ServiceTree();
+        try {
+            serviceTree.createChildNode(null, "key");
+        } catch(NullPointerException e) {
+            // OK!
+        }
     }
 }

@@ -74,7 +74,7 @@ public class TraversalTest {
         final List<ServiceTree.Node> nodes = new LinkedList<>();
         serviceTree.traverseTree(ServiceTree.Walk.PRE_ORDER, new ServiceTree.Walk() {
             @Override
-            public void execute(ServiceTree.Node node) {
+            public void execute(@NonNull ServiceTree.Node node, @NonNull CancellationToken cancellationToken) {
                 nodes.add(node);
             }
         });
@@ -92,29 +92,49 @@ public class TraversalTest {
     }
 
     @Test
+    public void traversePreorderCancelWorksAsIntended() {
+        final List<ServiceTree.Node> nodes = new LinkedList<>();
+        serviceTree.traverseTree(ServiceTree.Walk.PRE_ORDER, new ServiceTree.Walk() {
+            @Override
+            public void execute(@NonNull ServiceTree.Node node, @NonNull CancellationToken cancellationToken) {
+                nodes.add(node);
+                if(node == child1B1Node) {
+                    cancellationToken.cancel();
+                }
+            }
+        });
+        assertThat(nodes).containsExactly(serviceTree.getNode(ServiceTree.ROOT_KEY),
+                root1Node,
+                child1ANode,
+                child1A1Node,
+                child1A2Node,
+                child1BNode,
+                child1B1Node);
+    }
+
+    @Test
     public void traversePostOrderWorksAsIntended() {
         final List<ServiceTree.Node> nodes = new LinkedList<>();
         serviceTree.traverseTree(ServiceTree.Walk.POST_ORDER, new ServiceTree.Walk() {
             @Override
-            public void execute(ServiceTree.Node node) {
+            public void execute(@NonNull ServiceTree.Node node, @NonNull CancellationToken cancellationToken) {
                 nodes.add(node);
+                if(child1A1Node == node) {
+                    cancellationToken.cancel();
+                }
             }
         });
         assertThat(nodes).containsExactly(child2BNode, child2ANode, root2Node,
                 child1B2Node,
                 child1B1Node,
                 child1BNode,
-                child1A2Node,
-                child1A1Node,
-                child1ANode,
-                root1Node,
-                serviceTree.getTreeRoot());
+                child1A2Node, child1A1Node);
     }
 
     @Test
     public void traverseChainWorksAsIntended() {
         final List<ServiceTree.Node> nodes = new LinkedList<>();
-        serviceTree.traverseChain(child1B2Node, new ServiceTree.ChainWalk() {
+        serviceTree.traverseChain(child1B2Node, new ServiceTree.Walk() {
             @Override
             public void execute(@NonNull ServiceTree.Node node, @NonNull CancellationToken cancellationToken) {
                 nodes.add(node);
@@ -126,7 +146,7 @@ public class TraversalTest {
     @Test
     public void traverseChainCancelWorksAsIntended() {
         final List<ServiceTree.Node> nodes = new LinkedList<>();
-        serviceTree.traverseChain(child1B2Node, new ServiceTree.ChainWalk() {
+        serviceTree.traverseChain(child1B2Node, new ServiceTree.Walk() {
             @Override
             public void execute(@NonNull ServiceTree.Node node, @NonNull CancellationToken cancellationToken) {
                 nodes.add(node);

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.RelativeLayout;
 
+import com.zhuinden.navigator.DefaultStateChanger;
 import com.zhuinden.navigator.Navigator;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreenavigatorexample.injection.ApplicationComponent;
@@ -44,7 +45,9 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Navigator.configure().setStateChanger(this).install(this, root, HistoryBuilder.single(FirstKey.create()));
+        Navigator.configure()
+                .setStateChanger(DefaultStateChanger.configure().setExternalStateChanger(this).create(this, root))
+                .install(this, root, HistoryBuilder.single(FirstKey.create()));
     }
 
     @Override
@@ -84,7 +87,7 @@ public class MainActivity
             }
         }
         for(Object _newKey : stateChange.getNewState()) {
-            Key newKey = (Key)_newKey;
+            Key newKey = (Key) _newKey;
             if(!serviceTree.hasNodeWithKey(newKey)) {
                 newKey.bindServices(serviceTree.createChildNode(serviceTree.getNode(TAG), newKey));
             }

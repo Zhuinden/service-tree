@@ -1,5 +1,14 @@
 # Change log
 
+-Service Tree 1.3.0 (2017-03-30)
+--------------------------------
+- BREAKING CHANGE: `getService()` is now `@NonNull` instead of `@Nullable`, and if service is not found in the tree.
+- ADDED: `hasService()` method to check if the service exists in the given chain.
+- BREAKING CHANGE: `ChainWalk` is merged into `Walk`, `ChainWalk.CancellationToken` merged into `Walk.CancellationToken`
+- BREAKING CHANGE: `ServiceTree.traverseChain(Node, ChainWalk)` is now `ServiceTree.traverseChain(Node, Walk)`
+- BREAKING CHANGE: `Walk.execute(Node)` is now `Walk.execute(Node, CancellationToken)`
+- ENHANCEMENT: Any `Walk` on any subtree or chain is now cancelable using `cancellationToken.cancel()`.
+
 -Service Tree 1.2.3 (2017-03-28)
 --------------------------------
 - Add `ServiceTree.traverseChain(Node, ChainWalk)` method. It allows traversing the chain from a particular node through all its parents.

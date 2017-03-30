@@ -1,13 +1,13 @@
 package com.zhuinden.servicetreenavigatorexample;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.auto.value.AutoValue;
-import com.zhuinden.navigator.StateKey;
-import com.zhuinden.navigator.ViewController;
+import com.zhuinden.navigator.ViewChangeHandler;
+import com.zhuinden.navigator.changehandlers.SegueViewChangeHandler;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreenavigatorexample.injection.DaggerFirstComponent;
-import com.zhuinden.servicetreenavigatorexample.injection.FirstComponent;
 import com.zhuinden.servicetreenavigatorexample.injection.FirstModule;
 import com.zhuinden.servicetreenavigatorexample.injection.MainComponent;
 
@@ -17,18 +17,16 @@ import com.zhuinden.servicetreenavigatorexample.injection.MainComponent;
 
 @AutoValue
 public abstract class FirstKey
-        extends StateKey
         implements Key, Parcelable {
     @Override
     public int layout() {
         return R.layout.path_first;
     }
 
+    @NonNull
     @Override
-    public ViewController createViewController() {
-        ServiceTree.Node node = Services.getNode(this);
-        FirstComponent firstComponent = node.getService(Services.DAGGER_COMPONENT);
-        return firstComponent.firstController();
+    public ViewChangeHandler viewChangeHandler() {
+        return new SegueViewChangeHandler();
     }
 
     @Override

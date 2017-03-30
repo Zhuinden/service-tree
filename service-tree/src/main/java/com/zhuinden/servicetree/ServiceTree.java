@@ -94,6 +94,26 @@ public class ServiceTree {
         }
 
         /**
+         * Returns whether the service exists, specified by this name. If not found, then it's checked in its parent, and so on.
+         * If not found, it returns false.
+         *
+         * @param name the name of the service
+         * @return whether the service exists in the key or its parent chain
+         */
+        public boolean hasService(@NonNull String name) {
+            checkName(name);
+            if(services.containsKey(name)) {
+                return true;
+            } else {
+                if(parent == null) {
+                    return false;
+                } else {
+                    return parent.hasService(name);
+                }
+            }
+        }
+
+        /**
          * Returns the service specified by this name. If not found, then it's checked in its parent, and so on.
          * If not found, it returns null.
          *
@@ -101,18 +121,24 @@ public class ServiceTree {
          * @param <T>  the type of the service
          * @return the service
          */
-        @Nullable
+        @NonNull
         public <T> T getService(@NonNull String name) {
-            if(name == null) {
-                throw new NullPointerException("Name cannot be null!");
-            }
+            checkName(name);
             if(services.containsKey(name)) {
                 // noinspection unchecked
                 return (T) services.get(name);
             } else {
+                if(parent == null) {
+                    throw new IllegalArgumentException("The service [" + name + "] does not exist in the chain!");
+                }
                 // noinspection unchecked
-                return parent == null ? null : (T) parent.getService(name);
+                return (T) parent.getService(name);
             }
+        }
+
+        public boolean hasBoundService(String name) {
+            checkName(name);
+            return services.containsKey(name);
         }
 
         /**
@@ -131,22 +157,14 @@ public class ServiceTree {
 
         @NonNull
         public Node bindService(@NonNull String name, @NonNull Object service) {
-            if(name == null) {
-                throw new NullPointerException("Name cannot be null!");
-            }
-            if(service == null) {
-                throw new NullPointerException("Service cannot be null!");
-            }
+            checkName(name);
+            checkService(service);
             services.put(name, service);
             return this;
         }
 
-        void execute(Walk walk) {
-            walk.execute(this);
-        }
-
-        void execute(ChainWalk chainWalk, ChainWalk.CancellationToken cancellationToken) {
-            chainWalk.execute(this, cancellationToken);
+        void execute(Walk walk, Walk.CancellationToken cancellationToken) {
+            walk.execute(this, cancellationToken);
         }
 
         /**
@@ -337,7 +355,7 @@ public class ServiceTree {
         checkNode(node);
         traverseSubtree(node, Walk.POST_ORDER, new Walk() {
             @Override
-            public void execute(Node node) {
+            public void execute(@NonNull Node node, @NonNull CancellationToken cancellationToken) {
                 if(node.getKey().equals(ROOT_KEY)) {
                     return;
                 }
@@ -345,6 +363,31 @@ public class ServiceTree {
                 nodeMap.remove(node.getKey());
             }
         });
+    }
+
+    private void traverseSubtree(@NonNull Node node, @Walk.Mode int mode, @NonNull Walk walk, @NonNull Walk.CancellationToken cancellationToken) {
+        if(cancellationToken.isCancelled()) {
+            return;
+        }
+        if(mode == Walk.PRE_ORDER) {
+            node.execute(walk, cancellationToken);
+            if(cancellationToken.isCancelled()) {
+                return;
+            }
+            for(Node child : node.children) {
+                traverseSubtree(child, mode, walk, cancellationToken);
+            }
+        } else if(mode == Walk.POST_ORDER) {
+            List<Node> reversedChildren = new LinkedList<>(node.children);
+            Collections.reverse(reversedChildren);
+            for(Node child : reversedChildren) {
+                traverseSubtree(child, mode, walk, cancellationToken);
+                if(cancellationToken.isCancelled()) {
+                    return;
+                }
+            }
+            node.execute(walk, cancellationToken);
+        }
     }
 
     /**
@@ -357,19 +400,10 @@ public class ServiceTree {
     public void traverseSubtree(@NonNull Node node, @Walk.Mode int mode, @NonNull Walk walk) {
         checkNode(node);
         checkWalk(walk);
-        if(mode == Walk.PRE_ORDER) {
-            node.execute(walk);
-            for(Node child : node.children) {
-                traverseSubtree(child, mode, walk);
-            }
-        } else if(mode == Walk.POST_ORDER) {
-            List<Node> reversedChildren = new LinkedList<>(node.children);
-            Collections.reverse(reversedChildren);
-            for(Node child : reversedChildren) {
-                traverseSubtree(child, mode, walk);
-            }
-            node.execute(walk);
-        }
+
+        final Cancellation cancellation = new Cancellation();
+        Walk.CancellationToken cancellationToken = new CancellationTokenImpl(cancellation);
+        traverseSubtree(node, mode, walk, cancellationToken);
     }
 
     /**
@@ -377,51 +411,29 @@ public class ServiceTree {
      *
      * @param node The node that begins the chain traversal towards its parent.
      */
-    public void traverseChain(@NonNull Node node, @NonNull ChainWalk chainWalk) {
+    public void traverseChain(@NonNull Node node, @NonNull Walk walk) {
         checkNode(node);
-        checkChainWalk(chainWalk);
+        checkWalk(walk);
 
-        class Cancellation {
-            private boolean cancelled;
-
-            private boolean isCancelled() {
-                return cancelled;
-            }
-
-            private void cancel() {
-                this.cancelled = true;
-            }
-        }
         final Cancellation cancellation = new Cancellation();
-        ChainWalk.CancellationToken cancellationToken = new ChainWalk.CancellationToken() {
-            @Override
-            public void cancel() {
-                cancellation.cancel();
-            }
-        };
+        Walk.CancellationToken cancellationToken = new CancellationTokenImpl(cancellation);
         Node currentNode = node;
         while(currentNode != null) {
-            currentNode.execute(chainWalk, cancellationToken);
-            currentNode = currentNode.getParent();
+            currentNode.execute(walk, cancellationToken);
             if(cancellation.isCancelled()) {
                 break;
             }
+            currentNode = currentNode.getParent();
         }
     }
 
-    private void checkChainWalk(ChainWalk chainWalk) {
-        if(chainWalk == null) {
-            throw new NullPointerException("chainWalk cannot be null!");
-        }
-    }
-
-    private void checkService(Object service) {
+    private static void checkService(Object service) {
         if(service == null) {
             throw new NullPointerException("Service cannot be null!");
         }
     }
 
-    private void checkName(String name) {
+    private static void checkName(String name) {
         if(name == null) {
             throw new NullPointerException("Name cannot be null!");
         }
@@ -489,7 +501,30 @@ public class ServiceTree {
      * The operation that is executed for each node during {@link ServiceTree#traverseTree(int, Walk)} and {@link ServiceTree#traverseSubtree(Node, int, Walk)}.
      */
     public interface Walk {
-        void execute(@NonNull Node node);
+        /**
+         * This method is called for each node that the traversal matches against.
+         *
+         * @param node              the current node
+         * @param cancellationToken the token which allows cancelling the walk
+         */
+        void execute(@NonNull Node node, @NonNull CancellationToken cancellationToken);
+
+        /**
+         * Can be used to cancel the {@link Walk}.
+         */
+        interface CancellationToken {
+            /**
+             * Returns if cancel has been called previously.
+             *
+             * @return true if cancelled
+             */
+            boolean isCancelled();
+
+            /**
+             * Cancels the walk.
+             */
+            void cancel();
+        }
 
         @Retention(SOURCE)
         @IntDef({PRE_ORDER, POST_ORDER})
@@ -507,20 +542,34 @@ public class ServiceTree {
         int POST_ORDER = 2;
     }
 
-    /**
-     * The operation that is executed for each node in a chain during {@link ServiceTree#traverseChain(Node, ChainWalk)}.
-     */
-    public interface ChainWalk {
-        /**
-         * Can be used to cancel the chain walk.
-         */
-        interface CancellationToken {
-            /**
-             * Cancels the chain walk.
-             */
-            void cancel();
+    private static class CancellationTokenImpl
+            implements Walk.CancellationToken {
+        private Cancellation cancellation;
+
+        CancellationTokenImpl(Cancellation cancellation) {
+            this.cancellation = cancellation;
         }
 
-        void execute(@NonNull Node node, @NonNull CancellationToken cancellationToken);
+        @Override
+        public boolean isCancelled() {
+            return cancellation.isCancelled();
+        }
+
+        @Override
+        public void cancel() {
+            cancellation.cancel();
+        }
+    }
+
+    private static class Cancellation {
+        private boolean cancelled;
+
+        private boolean isCancelled() {
+            return cancelled;
+        }
+
+        private void cancel() {
+            this.cancelled = true;
+        }
     }
 }

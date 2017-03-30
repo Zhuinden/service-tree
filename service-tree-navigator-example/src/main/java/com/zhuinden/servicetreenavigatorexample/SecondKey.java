@@ -1,14 +1,14 @@
 package com.zhuinden.servicetreenavigatorexample;
 
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.google.auto.value.AutoValue;
-import com.zhuinden.navigator.StateKey;
-import com.zhuinden.navigator.ViewController;
+import com.zhuinden.navigator.ViewChangeHandler;
+import com.zhuinden.navigator.changehandlers.SegueViewChangeHandler;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreenavigatorexample.injection.DaggerSecondComponent;
 import com.zhuinden.servicetreenavigatorexample.injection.MainComponent;
-import com.zhuinden.servicetreenavigatorexample.injection.SecondComponent;
 import com.zhuinden.servicetreenavigatorexample.injection.SecondModule;
 
 /**
@@ -17,18 +17,16 @@ import com.zhuinden.servicetreenavigatorexample.injection.SecondModule;
 
 @AutoValue
 public abstract class SecondKey
-        extends StateKey
         implements Key, Parcelable {
     @Override
     public int layout() {
         return R.layout.path_second;
     }
 
+    @NonNull
     @Override
-    public ViewController createViewController() {
-        ServiceTree.Node node = Services.getNode(this);
-        SecondComponent secondComponent = node.getService(Services.DAGGER_COMPONENT);
-        return secondComponent.secondController();
+    public ViewChangeHandler viewChangeHandler() {
+        return new SegueViewChangeHandler();
     }
 
     @Override

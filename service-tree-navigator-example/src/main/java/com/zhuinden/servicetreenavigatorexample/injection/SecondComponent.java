@@ -1,7 +1,7 @@
 package com.zhuinden.servicetreenavigatorexample.injection;
 
-import com.zhuinden.servicetreenavigatorexample.SecondController;
 import com.zhuinden.servicetreenavigatorexample.SecondKey;
+import com.zhuinden.servicetreenavigatorexample.SecondView;
 
 import dagger.Component;
 
@@ -13,5 +13,5 @@ import dagger.Component;
 public interface SecondComponent {
     SecondKey secondKey();
 
-    SecondController secondController();
+    void inject(SecondView secondView);
 }
