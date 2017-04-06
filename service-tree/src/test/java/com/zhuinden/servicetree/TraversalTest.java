@@ -78,7 +78,7 @@ public class TraversalTest {
                 nodes.add(node);
             }
         });
-        assertThat(nodes).containsExactly(serviceTree.getNode(ServiceTree.ROOT_KEY),
+        assertThat(nodes).containsExactly( //
                 root1Node,
                 child1ANode,
                 child1A1Node,
@@ -103,13 +103,7 @@ public class TraversalTest {
                 }
             }
         });
-        assertThat(nodes).containsExactly(serviceTree.getNode(ServiceTree.ROOT_KEY),
-                root1Node,
-                child1ANode,
-                child1A1Node,
-                child1A2Node,
-                child1BNode,
-                child1B1Node);
+        assertThat(nodes).containsExactly(root1Node, child1ANode, child1A1Node, child1A2Node, child1BNode, child1B1Node);
     }
 
     @Test
@@ -124,11 +118,8 @@ public class TraversalTest {
                 }
             }
         });
-        assertThat(nodes).containsExactly(child2BNode, child2ANode, root2Node,
-                child1B2Node,
-                child1B1Node,
-                child1BNode,
-                child1A2Node, child1A1Node);
+        assertThat(nodes).containsExactly( //
+                child2BNode, child2ANode, root2Node, child1B2Node, child1B1Node, child1BNode, child1A2Node, child1A1Node);
     }
 
     @Test
@@ -140,7 +131,7 @@ public class TraversalTest {
                 nodes.add(node);
             }
         });
-        assertThat(nodes).containsExactly(child1B2Node, child1BNode, root1Node, serviceTree.getTreeRoot());
+        assertThat(nodes).containsExactly(child1B2Node, child1BNode, root1Node);
     }
 
     @Test

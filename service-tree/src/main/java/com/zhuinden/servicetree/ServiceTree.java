@@ -17,7 +17,6 @@ package com.zhuinden.servicetree;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import java.lang.annotation.Retention;
 import java.util.ArrayList;
@@ -40,15 +39,15 @@ public class ServiceTree {
     /**
      * A node that holds its key, its children and its bound services.
      */
-    public static class Node {
+    public static final class Node {
         /**
          * An entry that contains a service by its name.
          */
-        public static class Entry {
-            private String name;
-            private Object service;
+        public static final class Entry {
+            private final String name;
+            private final Object service;
 
-            Entry(String name, Object service) {
+            Entry(final String name, final Object service) {
                 this.name = name;
                 this.service = service;
             }
@@ -136,6 +135,14 @@ public class ServiceTree {
             }
         }
 
+        /**
+         * Returns whether there is a service locally bound to this node. It does not check if any parents have this.
+         *
+         * To check the existence of a service hierarchically, use {@link Node#hasService(String)}.
+         *
+         * @param name name of the service
+         * @return if the node has the service bound to it locally
+         */
         public boolean hasBoundService(String name) {
             checkName(name);
             return services.containsKey(name);
@@ -155,6 +162,13 @@ public class ServiceTree {
             return entries;
         }
 
+        /**
+         * Binds a service to the node.
+         *
+         * @param name    the name of the service
+         * @param service the service
+         * @return the node
+         */
         @NonNull
         public Node bindService(@NonNull String name, @NonNull Object service) {
             checkName(name);
@@ -178,7 +192,7 @@ public class ServiceTree {
 
         /**
          * Returns the parent of this node.
-         * Null only for the `root` key of the service tree, that all other root keys are appended to as children.
+         * Null only for the `tree root` of the service tree, that all other root keys are appended to as children.
          *
          * @return the parent
          */
@@ -245,10 +259,6 @@ public class ServiceTree {
     private Node root = new Node(this, null, ROOT_KEY);
 
     private Map<Object, Node> nodeMap = new LinkedHashMap<>();
-
-    {
-        nodeMap.put(ROOT_KEY, root);
-    }
 
     private void addNode(Node node) {
         nodeMap.put(node.getKey(), node);
@@ -328,7 +338,7 @@ public class ServiceTree {
      * @param mode the order mode (see {@link ServiceTree.Walk}).
      * @param walk the {@link Walk} that should be executed for each node
      */
-    public void traverseTree(@Walk.Mode int mode, @NonNull Walk walk) {
+    public void traverseTree(@Walk.Mode final int mode, @NonNull final Walk walk) {
         checkWalk(walk);
         traverseSubtree(root, mode, walk);
     }
@@ -343,7 +353,7 @@ public class ServiceTree {
      * Removes all nodes in the tree.
      */
     public void removeAllNodes() {
-        removeNodeAndChildren(nodeMap.get(ROOT_KEY));
+        removeNodeAndChildren(root);
     }
 
     /**
@@ -356,9 +366,6 @@ public class ServiceTree {
         traverseSubtree(node, Walk.POST_ORDER, new Walk() {
             @Override
             public void execute(@NonNull Node node, @NonNull CancellationToken cancellationToken) {
-                if(node.getKey().equals(ROOT_KEY)) {
-                    return;
-                }
                 node.parent.children.remove(node);
                 nodeMap.remove(node.getKey());
             }
@@ -397,13 +404,21 @@ public class ServiceTree {
      * @param mode the order mode (see {@link Walk})
      * @param walk the {@link Walk} that should be executed for each node
      */
-    public void traverseSubtree(@NonNull Node node, @Walk.Mode int mode, @NonNull Walk walk) {
+    public void traverseSubtree(@NonNull final Node node, @Walk.Mode final int mode, @NonNull final Walk walk) {
         checkNode(node);
         checkWalk(walk);
 
         final Cancellation cancellation = new Cancellation();
         Walk.CancellationToken cancellationToken = new CancellationTokenImpl(cancellation);
-        traverseSubtree(node, mode, walk, cancellationToken);
+        traverseSubtree(node, mode, new Walk() {
+            @Override
+            public void execute(@NonNull Node node, @NonNull CancellationToken cancellationToken) {
+                if(node.getKey().equals(ROOT_KEY)) {
+                    return;
+                }
+                walk.execute(node, cancellationToken);
+            }
+        }, cancellationToken);
     }
 
     /**
@@ -418,7 +433,7 @@ public class ServiceTree {
         final Cancellation cancellation = new Cancellation();
         Walk.CancellationToken cancellationToken = new CancellationTokenImpl(cancellation);
         Node currentNode = node;
-        while(currentNode != null) {
+        while(currentNode != getTreeRoot()) {
             currentNode.execute(walk, cancellationToken);
             if(cancellation.isCancelled()) {
                 break;
@@ -457,44 +472,6 @@ public class ServiceTree {
     @NonNull
     public Set<Object> getKeys() {
         return Collections.unmodifiableSet(new LinkedHashSet<>(nodeMap.keySet()));
-    }
-
-    /**
-     * Adds a service to the node of the tree root.
-     *
-     * @param name    the name of the service
-     * @param service the service
-     */
-    public void registerRootService(@NonNull String name, @NonNull Object service) {
-        checkName(name);
-        checkService(name);
-        root.bindService(name, service);
-    }
-
-    /**
-     * Gets the service specified by the given name.
-     *
-     * @param name the name of the service
-     * @param <T>  the type of the service
-     * @return the service
-     */
-    @Nullable
-    public <T> T getRootService(String name) {
-        // noinspection unchecked
-        return (T) root.getService(name);
-    }
-
-    /**
-     * Removes a service from the node of the tree root.
-     *
-     * @param name the name of the service
-     * @param <T> the type of the service
-     * @return the removed service
-     */
-    public <T> T unregisterRootService(String name) {
-        checkName(name);
-        // noinspection unchecked
-        return (T) root.removeService(name);
     }
 
     /**

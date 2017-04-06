@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreefragmentexample.injection.ApplicationComponent;
+import com.zhuinden.servicetreefragmentexample.injection.CustomApplication;
 import com.zhuinden.servicetreefragmentexample.injection.DaggerMainComponent;
 import com.zhuinden.servicetreefragmentexample.injection.Injector;
 import com.zhuinden.servicetreefragmentexample.injection.MainComponent;
@@ -79,7 +80,7 @@ public class MainActivity
         serviceTree = Injector.get().serviceTree();
         MainComponent mainComponent;
         if(!serviceTree.hasNodeWithKey(TAG)) {
-            ServiceTree.Node node = serviceTree.createRootNode(TAG);
+            ServiceTree.Node node = serviceTree.createChildNode(serviceTree.getNode(CustomApplication.SCOPE_KEY), TAG);
             ApplicationComponent applicationComponent = node.getService(Services.DAGGER_COMPONENT);
             mainComponent = DaggerMainComponent.builder().applicationComponent(applicationComponent).build();
             node.bindService(Services.DAGGER_COMPONENT, mainComponent);

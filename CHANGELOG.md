@@ -1,5 +1,19 @@
 # Change log
 
+-Service Tree 1.4.0 (2017-04-06)
+--------------------------------
+- BREAKING CHANGE: removed `registerRootService()`, `unregisterRootService()`, `getRootService()` methods.
+
+After thinking a lot about it, the fact that ROOT_KEY and its corresponding "root" exists is an implementation detail, and functions as a guard.
+
+The guard should not be used to store information. If a root is needed for a tree, it should be created with `createRootNode()`.
+
+Every other node is a child of that node. It is preferred that the hierarchy is constructed directly by the user.
+
+For safety sake (as the tree root is the parent of all root keys), `getTreeRoot()` is still kept. However, `traverseChain()` is preferred operation.
+
+- BREAKING CHANGE: `traverseChain()`, `traverseTree()`, and `traverseSubtree()` can no longer include the "tree root" bound to the internal `ROOT_KEY`.
+
 -Service Tree 1.3.0 (2017-03-30)
 --------------------------------
 - BREAKING CHANGE: `getService()` is now `@NonNull` instead of `@Nullable`, and if service is not found in the tree.

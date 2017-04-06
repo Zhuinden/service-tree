@@ -10,8 +10,8 @@ import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreeconductorexample.injection.ApplicationComponent;
+import com.zhuinden.servicetreeconductorexample.injection.CustomApplication;
 import com.zhuinden.servicetreeconductorexample.injection.DaggerMainComponent;
-import com.zhuinden.servicetreeconductorexample.injection.Injector;
 import com.zhuinden.servicetreeconductorexample.injection.MainComponent;
 
 import butterknife.BindView;
@@ -32,9 +32,9 @@ public class MainActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        serviceTree = Injector.get().serviceTree();
+        serviceTree = Services.getTree();
         if(!serviceTree.hasNodeWithKey(TAG)) {
-            ServiceTree.Node node = serviceTree.createRootNode(TAG);
+            ServiceTree.Node node = serviceTree.createChildNode(Services.getNode(CustomApplication.SCOPE_KEY), TAG);
             ApplicationComponent applicationComponent = node.getService(Services.DAGGER_COMPONENT);
             mainComponent = DaggerMainComponent.builder().applicationComponent(applicationComponent).build();
             node.bindService(Services.DAGGER_COMPONENT, mainComponent);

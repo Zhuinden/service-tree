@@ -9,6 +9,7 @@ import com.zhuinden.navigator.DefaultStateChanger;
 import com.zhuinden.navigator.Navigator;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreenavigatorexample.injection.ApplicationComponent;
+import com.zhuinden.servicetreenavigatorexample.injection.CustomApplication;
 import com.zhuinden.servicetreenavigatorexample.injection.DaggerMainComponent;
 import com.zhuinden.servicetreenavigatorexample.injection.Injector;
 import com.zhuinden.servicetreenavigatorexample.injection.MainComponent;
@@ -34,7 +35,7 @@ public class MainActivity
         serviceTree = Injector.get().serviceTree();
         MainComponent mainComponent;
         if(!serviceTree.hasNodeWithKey(TAG)) {
-            ServiceTree.Node node = serviceTree.createRootNode(TAG);
+            ServiceTree.Node node = serviceTree.createChildNode(serviceTree.getNode(CustomApplication.SCOPE_KEY), TAG);
             ApplicationComponent applicationComponent = node.getService(Services.DAGGER_COMPONENT);
             mainComponent = DaggerMainComponent.builder().applicationComponent(applicationComponent).build();
             node.bindService(Services.DAGGER_COMPONENT, mainComponent);

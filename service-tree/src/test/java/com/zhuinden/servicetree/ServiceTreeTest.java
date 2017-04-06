@@ -22,7 +22,6 @@ public class ServiceTreeTest {
         assertThat(serviceTree.getNode(testKey).getKey()).isSameAs(testKey);
 
         assertThat(node.getTree()).isSameAs(serviceTree);
-        assertThat(serviceTree.getKeys()).contains(serviceTree.getTreeRoot().getKey(), node.getKey());
 
         serviceTree.removeNodeAndChildren(node);
         assertThat(serviceTree.hasNodeWithKey(testKey)).isFalse();
@@ -79,13 +78,18 @@ public class ServiceTreeTest {
     }
 
     @Test
+    public void rootIsNotInNodeMap() {
+        ServiceTree serviceTree = new ServiceTree();
+        assertThat(serviceTree.hasNodeWithKey(serviceTree.getTreeRoot().getKey())).isFalse();
+    }
+
+    @Test
     public void rootCannotBeRemoved() {
         TestKey rootKey = new TestKey("root");
         ServiceTree serviceTree = new ServiceTree();
         ServiceTree.Node node = serviceTree.createRootNode(rootKey);
         serviceTree.removeAllNodes();
 
-        assertThat(serviceTree.hasNodeWithKey(ServiceTree.ROOT_KEY)).isTrue();
         assertThat(serviceTree.hasNodeWithKey(node)).isFalse();
     }
 
@@ -98,15 +102,13 @@ public class ServiceTreeTest {
         ServiceTree.Node node = serviceTree.createRootNode(rootKey);
         ServiceTree.Node child = serviceTree.createChildNode(node, childKey);
 
-        serviceTree.registerRootService("SERVICE", service);
+        node.bindService("SERVICE", service);
 
         assertThat(child.getService("SERVICE")).isSameAs(service);
         assertThat(node.getService("SERVICE")).isSameAs(service);
 
         assertThat(child.hasService("SERVICE")).isTrue();
         assertThat(node.hasService("SERVICE")).isTrue();
-        assertThat(serviceTree.getRootService("SERVICE")).isSameAs(service);
-        assertThat(serviceTree.unregisterRootService("SERVICE")).isSameAs(service);
 
         try {
             child.getService("SERVICE");
@@ -169,32 +171,12 @@ public class ServiceTreeTest {
     }
 
     @Test
-    public void rootServiceCannotBeNull() {
-        ServiceTree serviceTree = new ServiceTree();
-        try {
-            serviceTree.registerRootService("SERVICE", null);
-        } catch(NullPointerException e) {
-            // OK!
-        }
-    }
-
-    @Test
     public void nodeCannotBeNonexistent() {
         ServiceTree serviceTree = new ServiceTree();
         assertThat(serviceTree.hasNodeWithKey("notintree")).isFalse();
         try {
             serviceTree.getNode("notintree");
         } catch(IllegalStateException e) {
-            // OK!
-        }
-    }
-
-    @Test
-    public void rootServiceNameCannotBeNull() {
-        ServiceTree serviceTree = new ServiceTree();
-        try {
-            serviceTree.registerRootService(null, new Object());
-        } catch(NullPointerException e) {
             // OK!
         }
     }

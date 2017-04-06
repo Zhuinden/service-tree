@@ -18,15 +18,15 @@ Root nodes inherit root services, and child nodes inherit services from their pa
 
 ### Singleton / Application
 
-You can instantiate the `ServiceTree` as a singleton in a custom application class, and register root services with `serviceTree.registerRootService(String, Object).`
+You can instantiate the `ServiceTree` as a singleton in a custom application class, and create a root node for a key that identifies the APPLICATION scope.`
 
 ### Activity
 
-Activities are direct children of the root, so you can use `serviceTree.createRootNode(String nodeTag);`.
+Activities are children of the application scope, so you can use `serviceTree.createChildNode(Node appNode, String nodeTag);`.
 
 ### Fragment
 
-Fragments are tricky, but they are children of the Activity. Their node can be created with `serviceTree.createChildNode(Node parentNode, String childNodeTag);`
+Fragments are tricky, but they are children of the Activity. Their node can be created with `serviceTree.createChildNode(Node activityNode, String fragmentNodeTag);`
 
 ## Accessing services
 
@@ -56,7 +56,7 @@ In order to use Service Tree, you need to add jitpack to your project root gradl
 
 and add the compile dependency to your module level gradle.
 
-    compile 'com.github.Zhuinden:service-tree:1.3.0'
+    compile 'com.github.Zhuinden:service-tree:1.4.0'
 
 
 ## License
