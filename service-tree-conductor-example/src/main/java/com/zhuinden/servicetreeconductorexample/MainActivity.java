@@ -2,10 +2,16 @@ package com.zhuinden.servicetreeconductorexample;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.bluelinelabs.conductor.Conductor;
+import com.bluelinelabs.conductor.Controller;
+import com.bluelinelabs.conductor.ControllerChangeHandler;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.zhuinden.servicetree.ServiceTree;
@@ -13,6 +19,10 @@ import com.zhuinden.servicetreeconductorexample.injection.ApplicationComponent;
 import com.zhuinden.servicetreeconductorexample.injection.CustomApplication;
 import com.zhuinden.servicetreeconductorexample.injection.DaggerMainComponent;
 import com.zhuinden.servicetreeconductorexample.injection.MainComponent;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +37,35 @@ public class MainActivity
     RelativeLayout root;
 
     Router router;
+
+    List<RouterTransaction> previousState = Collections.emptyList();
+    ControllerChangeHandler.ControllerChangeListener controllerChangeListener = new ControllerChangeHandler.ControllerChangeListener() {
+        @Override
+        public void onChangeStarted(@Nullable Controller to, @Nullable Controller from, boolean isPush, @NonNull ViewGroup container, @NonNull ControllerChangeHandler handler) {
+
+        }
+
+        @Override
+        public void onChangeCompleted(@Nullable Controller to, @Nullable Controller from, boolean isPush, @NonNull ViewGroup container, @NonNull ControllerChangeHandler handler) {
+            List<RouterTransaction> newState = router.getBackstack();
+            Log.d("MainActivity",
+                    Arrays.toString(previousState.toArray()) + " :: " + Arrays.toString(newState.toArray()));
+            for(RouterTransaction previousKey : previousState) {
+                if(!newState.contains(previousKey)) {
+                    serviceTree.removeNodeAndChildren(serviceTree.getNode(previousKey));
+                    Log.d("MainActivity", "Destroying [" + previousKey + "]");
+                }
+            }
+            for(RouterTransaction newKey : newState) {
+                if(!serviceTree.hasNodeWithKey(newKey)) {
+                    ((BaseController) newKey.controller()).bindServices(serviceTree.createChildNode(serviceTree.getNode(
+                            TAG), newKey));
+                    Log.d("MainActivity", "Bind service to [" + newKey + "]");
+                }
+            }
+            previousState = router.getBackstack();
+        }
+    };
 
     MainComponent mainComponent;
 
@@ -46,9 +85,12 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         router = Conductor.attachRouter(this, root, savedInstanceState);
-        if (!router.hasRootController()) {
+        router.addChangeListener(controllerChangeListener);
+        if(!router.hasRootController()) {
+            Log.d("MainActivity", "Set root [FirstController]");
             router.setRoot(RouterTransaction.with(new FirstController()));
         }
+        previousState = router.getBackstack();
     }
 
     @Override

@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreeconductorexample.injection.ControllerScope;
@@ -24,7 +23,7 @@ import butterknife.Unbinder;
  */
 @ControllerScope(FirstController.class)
 public class FirstController
-        extends Controller {
+        extends BaseController {
     public static final String TAG = "FirstController";
 
     FirstComponent firstComponent;
@@ -33,18 +32,6 @@ public class FirstController
     ServiceTree serviceTree;
 
     public FirstController() {
-        ServiceTree serviceTree = Services.getTree();
-        ServiceTree.Node parentNode = Services.getNode(MainActivity.TAG);
-        MainComponent mainComponent = parentNode.getService(Services.DAGGER_COMPONENT);
-        firstComponent = DaggerFirstComponent.builder().mainComponent(mainComponent).build();
-        serviceTree.createChildNode(parentNode, TAG).bindService(Services.DAGGER_COMPONENT, firstComponent);
-        firstComponent.inject(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        serviceTree.removeNodeAndChildren(serviceTree.getNode(TAG));
-        super.onDestroy();
     }
 
     @OnClick(R.id.first_button)
@@ -67,5 +54,14 @@ public class FirstController
         super.onDestroyView(view);
         unbinder.unbind();
         unbinder = null;
+    }
+
+    @Override
+    public void bindServices(ServiceTree.Node node) {
+        MainComponent mainComponent = node.getService(Services.DAGGER_COMPONENT);
+        node.bindService(Services.DAGGER_COMPONENT,
+                DaggerFirstComponent.builder().mainComponent(mainComponent).build());
+        firstComponent = node.getService(Services.DAGGER_COMPONENT);
+        firstComponent.inject(this);
     }
 }
