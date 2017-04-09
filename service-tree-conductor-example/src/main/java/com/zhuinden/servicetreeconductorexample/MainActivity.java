@@ -102,6 +102,7 @@ public class MainActivity
 
     @Override
     protected void onDestroy() {
+        router.removeChangeListener(controllerChangeListener);
         super.onDestroy();
         if(isFinishing()) {
             serviceTree.removeNodeAndChildren(serviceTree.getNode(TAG));
