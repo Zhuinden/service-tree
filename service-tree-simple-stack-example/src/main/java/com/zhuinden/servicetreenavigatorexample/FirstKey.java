@@ -4,23 +4,23 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.auto.value.AutoValue;
-import com.zhuinden.navigator.ViewChangeHandler;
-import com.zhuinden.navigator.changehandlers.SegueViewChangeHandler;
 import com.zhuinden.servicetree.ServiceTree;
-import com.zhuinden.servicetreenavigatorexample.injection.DaggerSecondComponent;
+import com.zhuinden.servicetreenavigatorexample.injection.DaggerFirstComponent;
+import com.zhuinden.servicetreenavigatorexample.injection.FirstModule;
 import com.zhuinden.servicetreenavigatorexample.injection.MainComponent;
-import com.zhuinden.servicetreenavigatorexample.injection.SecondModule;
+import com.zhuinden.simplestack.navigator.ViewChangeHandler;
+import com.zhuinden.simplestack.navigator.changehandlers.SegueViewChangeHandler;
 
 /**
  * Created by Owner on 2017. 03. 17..
  */
 
 @AutoValue
-public abstract class SecondKey
+public abstract class FirstKey
         implements Key, Parcelable {
     @Override
     public int layout() {
-        return R.layout.path_second;
+        return R.layout.path_first;
     }
 
     @NonNull
@@ -33,10 +33,10 @@ public abstract class SecondKey
     public void bindServices(ServiceTree.Node node) {
         MainComponent mainComponent = node.getService(Services.DAGGER_COMPONENT);
         node.bindService(Services.DAGGER_COMPONENT,
-                DaggerSecondComponent.builder().mainComponent(mainComponent).secondModule(new SecondModule(this)).build());
+                DaggerFirstComponent.builder().mainComponent(mainComponent).firstModule(new FirstModule(this)).build());
     }
 
-    public static SecondKey create() {
-        return new AutoValue_SecondKey();
+    public static FirstKey create() {
+        return new AutoValue_FirstKey();
     }
 }

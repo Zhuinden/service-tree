@@ -29,7 +29,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':service-tree')
-    compile 'com.github.Zhuinden:navigator:1.0.0'
+    compile 'com.github.Zhuinden:simple-stack:1.5.1'
 
     apt 'frankiesardo:auto-parcel:1.0.3'
 

@@ -11,7 +11,7 @@
             <option value="$PROJECT_DIR$/service-tree" />
             <option value="$PROJECT_DIR$/service-tree-conductor-example" />
             <option value="$PROJECT_DIR$/service-tree-fragment-example" />
-            <option value="$PROJECT_DIR$/service-tree-navigator-example" />
+            <option value="$PROJECT_DIR$/service-tree-simple-stack-example" />
             <option value="$PROJECT_DIR$/service-tree-view-example" />
           </set>
         </option>

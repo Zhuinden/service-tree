@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.RelativeLayout;
 
-import com.zhuinden.navigator.DefaultStateChanger;
-import com.zhuinden.navigator.Navigator;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreenavigatorexample.injection.ApplicationComponent;
 import com.zhuinden.servicetreenavigatorexample.injection.CustomApplication;
@@ -16,6 +14,8 @@ import com.zhuinden.servicetreenavigatorexample.injection.MainComponent;
 import com.zhuinden.simplestack.HistoryBuilder;
 import com.zhuinden.simplestack.StateChange;
 import com.zhuinden.simplestack.StateChanger;
+import com.zhuinden.simplestack.navigator.DefaultStateChanger;
+import com.zhuinden.simplestack.navigator.Navigator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

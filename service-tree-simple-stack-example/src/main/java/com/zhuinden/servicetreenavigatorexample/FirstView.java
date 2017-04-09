@@ -7,9 +7,9 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.zhuinden.navigator.Navigator;
 import com.zhuinden.servicetreenavigatorexample.injection.FirstComponent;
 import com.zhuinden.simplestack.Backstack;
+import com.zhuinden.simplestack.navigator.Navigator;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;

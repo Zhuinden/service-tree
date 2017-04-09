@@ -1,1 +1,1 @@
-include ':service-tree', ':service-tree-fragment-example', 'service-tree-view-example', 'service-tree-navigator-example', 'service-tree-conductor-example'
+include ':service-tree', ':service-tree-fragment-example', 'service-tree-view-example', 'service-tree-simple-stack-example', 'service-tree-conductor-example'

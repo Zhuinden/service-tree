@@ -1,7 +1,7 @@
 package com.zhuinden.servicetreenavigatorexample;
 
-import com.zhuinden.navigator.StateKey;
 import com.zhuinden.servicetree.ServiceTree;
+import com.zhuinden.simplestack.navigator.StateKey;
 
 /**
  * Created by Owner on 2017. 03. 17..
