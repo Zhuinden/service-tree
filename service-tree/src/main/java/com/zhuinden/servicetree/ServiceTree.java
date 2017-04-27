@@ -126,11 +126,11 @@ public class ServiceTree {
                 // noinspection unchecked
                 return (T) services.get(name);
             } else {
-                if(parent == null) {
+                if(parent == null) { // note: this must never be getParent()!
                     throw new IllegalArgumentException("The service [" + name + "] does not exist in the chain!");
                 }
                 // noinspection unchecked
-                return (T) parent.getService(name);
+                return (T) parent.getService(name); // note: this must never be getParent()!
             }
         }
 
@@ -191,13 +191,47 @@ public class ServiceTree {
 
         /**
          * Returns the parent of this node.
-         * Null for tree roots.
+         * Null for root nodes.
          *
          * @return the parent
          */
         @Nullable
         public Node getParent() {
             return parent == serviceTree.root ? null : parent;
+        }
+
+        /**
+         * Returns if the root has a direct child with the given key.
+         *
+         * @param key the key of the direct child
+         * @return the direct child
+         */
+        public boolean hasChild(Object key) {
+            checkKey(key);
+            for(Node node : children) {
+                if(node.getKey().equals(key)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /**
+         * Returns the direct child with the given key.
+         *
+         * @param key the key of the direct child
+         * @return the child
+         * @throws IllegalArgumentException if direct child is not found
+         */
+        @NonNull
+        public Node getChild(Object key) {
+            checkKey(key);
+            for(Node node : children) {
+                if(node.getKey().equals(key)) {
+                    return node;
+                }
+            }
+            throw new IllegalArgumentException("No child found in node [" + getKey() + "] for key [" + key + "]");
         }
 
         /**
@@ -237,7 +271,7 @@ public class ServiceTree {
         }
     }
 
-    static final Object ROOT_KEY = new RootKey();
+    private static final Object ROOT_KEY = new RootKey();
 
     private static final class RootKey {
         @Override
@@ -275,7 +309,7 @@ public class ServiceTree {
         return nodeMap.containsKey(key);
     }
 
-    private void checkKey(Object key) {
+    private static void checkKey(Object key) {
         if(key == null) {
             throw new NullPointerException("Key cannot be null!");
         }
@@ -463,6 +497,45 @@ public class ServiceTree {
     public Set<Object> getKeys() {
         return Collections.unmodifiableSet(new LinkedHashSet<>(nodeMap.keySet()));
     }
+
+    /**
+     * Adds a service to the node of the tree root.
+     *
+     * @param name    the name of the service
+     * @param service the service
+     */
+    public void registerRootService(@NonNull String name, @NonNull Object service) {
+        checkName(name);
+        checkService(name);
+        root.bindService(name, service);
+    }
+
+    /**
+     * Gets the service specified by the given name.
+     *
+     * @param name the name of the service
+     * @param <T>  the type of the service
+     * @return the service
+     */
+    @Nullable
+    public <T> T getRootService(String name) {
+        // noinspection unchecked
+        return (T) root.getService(name);
+    }
+
+    /**
+     * Removes a service from the node of the tree root.
+     *
+     * @param name the name of the service
+     * @param <T>  the type of the service
+     * @return the removed service
+     */
+    public <T> T unregisterRootService(String name) {
+        checkName(name);
+        // noinspection unchecked
+        return (T) root.removeService(name);
+    }
+
 
     /**
      * The operation that is executed for each node during {@link ServiceTree#traverseTree(int, Walk)} and {@link ServiceTree#traverseSubtree(Node, int, Walk)}.

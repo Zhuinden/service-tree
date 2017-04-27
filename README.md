@@ -18,15 +18,16 @@ Root nodes inherit root services, and child nodes inherit services from their pa
 
 ### Singleton / Application
 
-You can instantiate the `ServiceTree` as a singleton in a custom application class, and create a root node for a key that identifies the APPLICATION scope.`
+You can instantiate the `ServiceTree` as a singleton in a custom application class, and register root services with `serviceTree.registerRootService(String, Object).`
+These services are accessible by all root nodes, and children.
 
 ### Activity
 
-Activities are children of the application scope, so you can use `serviceTree.createChildNode(Node appNode, String nodeTag);`.
+Activities are direct children of the root, so you can use `serviceTree.createRootNode(String nodeTag);`.
 
 ### Fragment
 
-Fragments are tricky, but they are children of the Activity. Their node can be created with `serviceTree.createChildNode(Node activityNode, String fragmentNodeTag);`
+Fragments are tricky, but they are children of the Activity. Their node can be created with `serviceTree.createChildNode(Node parentNode, String childNodeTag);`
 
 ## Accessing services
 

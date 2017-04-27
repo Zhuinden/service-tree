@@ -20,6 +20,8 @@ public class ServiceTreeTest {
         assertThat(serviceTree.getNode(testKey).getKey()).isSameAs(testKey);
 
         assertThat(node.getTree()).isSameAs(serviceTree);
+        assertThat(serviceTree.getKeys()).doesNotContain(serviceTree.root.getKey());
+        assertThat(serviceTree.getKeys()).contains(node.getKey());
 
         serviceTree.removeNodeAndChildren(node);
         assertThat(serviceTree.hasNodeWithKey(testKey)).isFalse();
@@ -100,13 +102,15 @@ public class ServiceTreeTest {
         ServiceTree.Node node = serviceTree.createRootNode(rootKey);
         ServiceTree.Node child = serviceTree.createChildNode(node, childKey);
 
-        node.bindService("SERVICE", service);
+        serviceTree.registerRootService("SERVICE", service);
 
         assertThat(child.getService("SERVICE")).isSameAs(service);
         assertThat(node.getService("SERVICE")).isSameAs(service);
 
         assertThat(child.hasService("SERVICE")).isTrue();
         assertThat(node.hasService("SERVICE")).isTrue();
+        assertThat(serviceTree.getRootService("SERVICE")).isSameAs(service);
+        assertThat(serviceTree.unregisterRootService("SERVICE")).isSameAs(service);
 
         try {
             child.getService("SERVICE");
@@ -132,11 +136,15 @@ public class ServiceTreeTest {
         ServiceTree.Node root = serviceTree.createRootNode(rootKey);
         ServiceTree.Node test1 = serviceTree.createChildNode(root, test1Key);
         assertThat(serviceTree.getNode(rootKey).getChildren()).containsExactly(test1);
+        assertThat(root.hasChild(test1Key)).isTrue();
+        assertThat(root.getChild(test1Key)).isSameAs(test1);
         ServiceTree.Node test2 = serviceTree.createChildNode(root, test2Key);
         assertThat(serviceTree.getNode(rootKey).getChildren()).containsExactly(test1, test2);
+        assertThat(root.getChild(test2Key)).isSameAs(test2);
         ServiceTree.Node test3 = serviceTree.createChildNode(root, test3Key);
         assertThat(serviceTree.getNode(rootKey).getChildren()).containsExactly(test1, test2, test3);
-
+        assertThat(root.getChild(test3Key)).isSameAs(test3);
+        
         serviceTree.removeNodeAndChildren(test2);
 
         List<ServiceTree.Node> children = serviceTree.getNode(rootKey).getChildren();
@@ -169,12 +177,33 @@ public class ServiceTreeTest {
     }
 
     @Test
+    public void rootServiceCannotBeNull() {
+        ServiceTree serviceTree = new ServiceTree();
+        try {
+            serviceTree.registerRootService("SERVICE", null);
+        } catch(NullPointerException e) {
+            // OK!
+        }
+    }
+
+    @Test
     public void nodeCannotBeNonexistent() {
         ServiceTree serviceTree = new ServiceTree();
         assertThat(serviceTree.hasNodeWithKey("notintree")).isFalse();
         try {
             serviceTree.getNode("notintree");
         } catch(IllegalStateException e) {
+            // OK!
+        }
+    }
+
+
+    @Test
+    public void rootServiceNameCannotBeNull() {
+        ServiceTree serviceTree = new ServiceTree();
+        try {
+            serviceTree.registerRootService(null, new Object());
+        } catch(NullPointerException e) {
             // OK!
         }
     }

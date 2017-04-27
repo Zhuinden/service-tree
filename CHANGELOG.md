@@ -1,5 +1,17 @@
 # Change log
 
+-Service Tree 1.5.0 (2017-04-27)
+--------------------------------
+- RE-ADDED: `registerRootService()`, `unregisterRootService()`, `getRootService()`. Sorry for the inconvenience.
+
+Now the root CAN contain information, BUT it is no longer exposed to anyone outside the library. It should have been like this from the start.
+
+- REMOVED: `getTreeRoot()`.
+
+- CHANGE: `getParent()` will return `null` for root keys instead of `getTreeRoot()`.
+
+- ADDED: `node.getChild()` and `node.hasChild()` methods that returns the direct child.
+
 -Service Tree 1.4.0 (2017-04-06)
 --------------------------------
 - BREAKING CHANGE: removed `registerRootService()`, `unregisterRootService()`, `getRootService()` methods.
