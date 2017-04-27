@@ -17,7 +17,7 @@ package com.zhuinden.servicetree;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-
+import android.support.annotation.Nullable;
 import java.lang.annotation.Retention;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +27,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
@@ -192,12 +191,13 @@ public class ServiceTree {
 
         /**
          * Returns the parent of this node.
-         * Null only for the `tree root` of the service tree, that all other root keys are appended to as children.
+         * Null for tree roots.
          *
          * @return the parent
          */
+        @Nullable
         public Node getParent() {
-            return parent;
+            return parent == serviceTree.root ? null : parent;
         }
 
         /**
@@ -256,7 +256,7 @@ public class ServiceTree {
         }
     }
 
-    private Node root = new Node(this, null, ROOT_KEY);
+    Node root = new Node(this, null, ROOT_KEY);
 
     private Map<Object, Node> nodeMap = new LinkedHashMap<>();
 
@@ -433,7 +433,7 @@ public class ServiceTree {
         final Cancellation cancellation = new Cancellation();
         Walk.CancellationToken cancellationToken = new CancellationTokenImpl(cancellation);
         Node currentNode = node;
-        while(currentNode != getTreeRoot()) {
+        while(currentNode != null) {
             currentNode.execute(walk, cancellationToken);
             if(cancellation.isCancelled()) {
                 break;
@@ -452,16 +452,6 @@ public class ServiceTree {
         if(name == null) {
             throw new NullPointerException("Name cannot be null!");
         }
-    }
-
-    /**
-     * Returns the root node of the tree.
-     *
-     * @return the root node of the tree
-     */
-    @NonNull
-    public Node getTreeRoot() {
-        return root;
     }
 
     /**

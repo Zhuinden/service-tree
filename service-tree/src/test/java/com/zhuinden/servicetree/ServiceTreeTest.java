@@ -1,9 +1,7 @@
 package com.zhuinden.servicetree;
 
 import org.junit.Test;
-
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -80,11 +78,11 @@ public class ServiceTreeTest {
     @Test
     public void rootIsNotInNodeMap() {
         ServiceTree serviceTree = new ServiceTree();
-        assertThat(serviceTree.hasNodeWithKey(serviceTree.getTreeRoot().getKey())).isFalse();
+        assertThat(serviceTree.hasNodeWithKey(serviceTree.root.getKey())).isFalse();
     }
 
     @Test
-    public void rootCannotBeRemoved() {
+    public void rootNodeIsRemoved() {
         TestKey rootKey = new TestKey("root");
         ServiceTree serviceTree = new ServiceTree();
         ServiceTree.Node node = serviceTree.createRootNode(rootKey);
