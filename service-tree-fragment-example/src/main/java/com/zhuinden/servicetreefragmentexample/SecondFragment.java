@@ -7,12 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreefragmentexample.injection.DaggerSecondComponent;
 import com.zhuinden.servicetreefragmentexample.injection.MainComponent;
 import com.zhuinden.servicetreefragmentexample.injection.SecondComponent;
-
 import butterknife.ButterKnife;
 
 /**

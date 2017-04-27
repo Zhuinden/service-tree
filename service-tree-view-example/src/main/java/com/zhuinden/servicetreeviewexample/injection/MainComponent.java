@@ -2,7 +2,6 @@ package com.zhuinden.servicetreeviewexample.injection;
 
 import com.zhuinden.servicetreeviewexample.BackstackHolder;
 import com.zhuinden.servicetreeviewexample.MainActivity;
-
 import dagger.Component;
 
 /**

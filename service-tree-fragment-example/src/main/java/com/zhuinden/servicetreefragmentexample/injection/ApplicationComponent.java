@@ -1,9 +1,7 @@
 package com.zhuinden.servicetreefragmentexample.injection;
 
 import com.zhuinden.servicetree.ServiceTree;
-
 import javax.inject.Singleton;
-
 import dagger.Component;
 
 /**

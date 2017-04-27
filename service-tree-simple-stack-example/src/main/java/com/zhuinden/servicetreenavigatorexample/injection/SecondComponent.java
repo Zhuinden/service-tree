@@ -8,7 +8,7 @@ import dagger.Component;
 /**
  * Created by Owner on 2017. 03. 07..
  */
-@ControllerScope(SecondKey.class)
+@KeyScope(SecondKey.class)
 @Component(dependencies = {MainComponent.class}, modules = {SecondModule.class})
 public interface SecondComponent {
     SecondKey secondKey();

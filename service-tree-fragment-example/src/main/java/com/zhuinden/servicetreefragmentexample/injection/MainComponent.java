@@ -1,7 +1,6 @@
 package com.zhuinden.servicetreefragmentexample.injection;
 
 import com.zhuinden.servicetreefragmentexample.MainActivity;
-
 import dagger.Component;
 
 /**

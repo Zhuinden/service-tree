@@ -73,7 +73,7 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         serviceTree = Services.getTree();
         if(!serviceTree.hasNodeWithKey(TAG)) {
-            ServiceTree.Node node = serviceTree.createChildNode(Services.getNode(CustomApplication.SCOPE_KEY), TAG);
+            ServiceTree.Node node = serviceTree.createRootNode(TAG);
             ApplicationComponent applicationComponent = node.getService(Services.DAGGER_COMPONENT);
             mainComponent = DaggerMainComponent.builder().applicationComponent(applicationComponent).build();
             node.bindService(Services.DAGGER_COMPONENT, mainComponent);

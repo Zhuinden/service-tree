@@ -1,7 +1,6 @@
 package com.zhuinden.servicetreeviewexample;
 
 import android.support.annotation.LayoutRes;
-
 import com.zhuinden.servicetree.ServiceTree;
 
 /**

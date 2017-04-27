@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
-
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreeviewexample.injection.ApplicationComponent;
-import com.zhuinden.servicetreeviewexample.injection.CustomApplication;
 import com.zhuinden.servicetreeviewexample.injection.DaggerMainComponent;
 import com.zhuinden.servicetreeviewexample.injection.Injector;
 import com.zhuinden.servicetreeviewexample.injection.MainComponent;
@@ -17,9 +15,7 @@ import com.zhuinden.simplestack.BackstackDelegate;
 import com.zhuinden.simplestack.HistoryBuilder;
 import com.zhuinden.simplestack.StateChange;
 import com.zhuinden.simplestack.StateChanger;
-
 import javax.inject.Inject;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -49,7 +45,7 @@ public class MainActivity
         serviceTree = Injector.get().serviceTree();
         MainComponent mainComponent;
         if(!serviceTree.hasNodeWithKey(TAG)) {
-            ServiceTree.Node node = serviceTree.createChildNode(serviceTree.getNode(CustomApplication.SCOPE_KEY), TAG);
+            ServiceTree.Node node = serviceTree.createRootNode(TAG);
             ApplicationComponent applicationComponent = node.getService(Services.DAGGER_COMPONENT);
             mainComponent = DaggerMainComponent.builder().applicationComponent(applicationComponent).build();
             node.bindService(Services.DAGGER_COMPONENT, mainComponent);

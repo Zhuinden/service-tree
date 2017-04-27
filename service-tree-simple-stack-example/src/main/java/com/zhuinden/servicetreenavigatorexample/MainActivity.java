@@ -35,7 +35,7 @@ public class MainActivity
         serviceTree = Injector.get().serviceTree();
         MainComponent mainComponent;
         if(!serviceTree.hasNodeWithKey(TAG)) {
-            ServiceTree.Node node = serviceTree.createChildNode(serviceTree.getNode(CustomApplication.SCOPE_KEY), TAG);
+            ServiceTree.Node node = serviceTree.createRootNode(TAG);
             ApplicationComponent applicationComponent = node.getService(Services.DAGGER_COMPONENT);
             mainComponent = DaggerMainComponent.builder().applicationComponent(applicationComponent).build();
             node.bindService(Services.DAGGER_COMPONENT, mainComponent);

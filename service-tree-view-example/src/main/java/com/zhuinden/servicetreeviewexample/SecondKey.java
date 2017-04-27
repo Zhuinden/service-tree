@@ -1,7 +1,6 @@
 package com.zhuinden.servicetreeviewexample;
 
 import android.os.Parcelable;
-
 import com.google.auto.value.AutoValue;
 import com.zhuinden.servicetree.ServiceTree;
 import com.zhuinden.servicetreeviewexample.injection.DaggerSecondComponent;

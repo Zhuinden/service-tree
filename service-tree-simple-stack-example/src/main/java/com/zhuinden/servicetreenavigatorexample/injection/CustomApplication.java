@@ -11,15 +11,12 @@ import com.zhuinden.servicetreenavigatorexample.Services;
 
 public class CustomApplication
         extends Application {
-    public static final String SCOPE_KEY = "CustomApplication";
-
     @Override
     public void onCreate() {
         super.onCreate();
         ApplicationComponent applicationComponent = DaggerApplicationComponent.create();
         Injector.INSTANCE.applicationComponent = applicationComponent;
         ServiceTree serviceTree = applicationComponent.serviceTree();
-        ServiceTree.Node node = serviceTree.createRootNode(SCOPE_KEY);
-        node.bindService(Services.DAGGER_COMPONENT, applicationComponent);
+        serviceTree.registerRootService(Services.DAGGER_COMPONENT, applicationComponent);
     }
 }

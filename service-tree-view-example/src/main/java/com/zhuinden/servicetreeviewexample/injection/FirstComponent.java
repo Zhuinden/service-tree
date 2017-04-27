@@ -1,7 +1,6 @@
 package com.zhuinden.servicetreeviewexample.injection;
 
 import com.zhuinden.servicetreeviewexample.FirstView;
-
 import dagger.Component;
 
 /**

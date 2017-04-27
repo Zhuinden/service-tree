@@ -2,7 +2,6 @@ package com.zhuinden.servicetreeviewexample;
 
 import com.zhuinden.servicetreeviewexample.injection.ActivityScope;
 import com.zhuinden.simplestack.Backstack;
-
 import javax.inject.Inject;
 
 /**

@@ -4,10 +4,8 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
-
 import com.zhuinden.servicetreeviewexample.injection.SecondComponent;
 import com.zhuinden.simplestack.Backstack;
-
 import butterknife.ButterKnife;
 
 /**
