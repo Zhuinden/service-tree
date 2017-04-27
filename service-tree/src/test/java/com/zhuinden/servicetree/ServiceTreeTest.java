@@ -33,11 +33,14 @@ public class ServiceTreeTest {
         TestKey childKey = new TestKey("childKey");
         ServiceTree serviceTree = new ServiceTree();
         ServiceTree.Node parent = serviceTree.createRootNode(testKey);
+        assertThat(parent.hasChild(childKey)).isFalse();
         ServiceTree.Node child = serviceTree.createChildNode(serviceTree.getNode(testKey), childKey);
+        assertThat(parent.hasChild(childKey)).isTrue();
         assertThat(child.getParent()).isSameAs(parent);
         assertThat(child.getKey()).isSameAs(childKey);
 
         serviceTree.removeNodeAndChildren(parent);
+        assertThat(parent.hasChild(childKey)).isFalse();
         assertThat(serviceTree.hasNodeWithKey(childKey)).isFalse();
         assertThat(serviceTree.hasNodeWithKey(testKey)).isFalse();
     }
@@ -52,6 +55,7 @@ public class ServiceTreeTest {
         boolean didFind = false;
         for(ServiceTree.Node.Entry entry : entries) {
             if(entry.getService() == service) {
+                assertThat(entry.getName()).isEqualTo("SERVICE");
                 didFind = true;
                 break;
             }
@@ -146,6 +150,11 @@ public class ServiceTreeTest {
         assertThat(root.getChild(test3Key)).isSameAs(test3);
         
         serviceTree.removeNodeAndChildren(test2);
+        try {
+            root.getChild(test2Key);
+        } catch(IllegalArgumentException e) {
+            // OK!
+        }
 
         List<ServiceTree.Node> children = serviceTree.getNode(rootKey).getChildren();
         assertThat(children).containsExactly(test1, test3);
@@ -238,5 +247,17 @@ public class ServiceTreeTest {
         } catch(NullPointerException e) {
             // OK!
         }
+    }
+
+    @Test
+    public void rootToString() {
+        ServiceTree serviceTree = new ServiceTree();
+        assertThat(serviceTree.root.getKey().toString()).isEqualTo("ServiceRoot[]");
+    }
+
+    @Test
+    public void rootNodeToString() {
+        ServiceTree serviceTree = new ServiceTree();
+        assertThat(serviceTree.root.toString()).isEqualTo("Node[ServiceRoot[]]");
     }
 }
