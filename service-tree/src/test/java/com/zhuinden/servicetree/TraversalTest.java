@@ -148,4 +148,53 @@ public class TraversalTest {
         });
         assertThat(nodes).containsExactly(child1B2Node, child1BNode);
     }
+
+    @Test
+    public void traverseChainPreOrderWorksAsIntended() {
+        final List<ServiceTree.Node> nodes = new LinkedList<>();
+        serviceTree.traverseChain(child1ANode, ServiceTree.Walk.PRE_ORDER, new ServiceTree.Walk() {
+            @Override
+            public void execute(@NonNull ServiceTree.Node node, @NonNull CancellationToken cancellationToken) {
+                nodes.add(node);
+            }
+        });
+        assertThat(nodes).containsExactly(root1Node, child1ANode);
+    }
+
+    @Test
+    public void traverseChainPreOrderWorksAsIntended2() {
+        final List<ServiceTree.Node> nodes = new LinkedList<>();
+        serviceTree.traverseChain(child1A1Node, ServiceTree.Walk.PRE_ORDER, new ServiceTree.Walk() {
+            @Override
+            public void execute(@NonNull ServiceTree.Node node, @NonNull CancellationToken cancellationToken) {
+                nodes.add(node);
+            }
+        });
+        assertThat(nodes).containsExactly(root1Node, child1ANode, child1A1Node);
+    }
+
+    @Test
+    public void traverseChainPreOrderCancelWorksAsIntended() {
+        final List<ServiceTree.Node> nodes = new LinkedList<>();
+        serviceTree.traverseChain(child1A1Node, ServiceTree.Walk.PRE_ORDER, new ServiceTree.Walk() {
+            @Override
+            public void execute(@NonNull ServiceTree.Node node, @NonNull CancellationToken cancellationToken) {
+                nodes.add(node);
+                if(child1ANode == node) {
+                    cancellationToken.cancel();
+                }
+            }
+        });
+        assertThat(nodes).containsExactly(root1Node, child1ANode);
+    }
+
+    @Test
+    public void findRootFindsRoot() {
+        assertThat(serviceTree.findRoot(root1Node)).isSameAs(root1Node);
+    }
+
+    @Test
+    public void findRootForChildFindsRoot() {
+        assertThat(serviceTree.findRoot(child1A2Node)).isSameAs(root1Node);
+    }
 }

@@ -1,5 +1,11 @@
 # Change log
 
+-Service Tree 1.5.1 (2017-05-06)
+--------------------------------
+- ADDED: `findRoot(Node)` method that finds the root for a particular node.
+- ADDED: `traverseChain(Node, int, Walk)` method where `PRE_ORDER` executes the chain traversal from root to child.
+- FIX: `getRootService()` is now marked with `@NonNull` as it should have been.
+
 -Service Tree 1.5.0 (2017-04-27)
 --------------------------------
 - RE-ADDED: `registerRootService()`, `unregisterRootService()`, `getRootService()`. Sorry for the inconvenience.

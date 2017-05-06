@@ -18,6 +18,7 @@ package com.zhuinden.servicetree;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import java.lang.annotation.Retention;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
@@ -456,24 +458,76 @@ public class ServiceTree {
     }
 
     /**
-     * Traversing the chain from the node through its parents, including the root.
+     * Traversing the chain from the node through its parents.
+     * It is equivalent to calling {@link ServiceTree#traverseChain(Node, int, Walk)} with {@link Walk.Mode#POST_ORDER} parameter.
      *
      * @param node The node that begins the chain traversal towards its parent.
+     * @param walk The walk executed for each element.
      */
     public void traverseChain(@NonNull Node node, @NonNull Walk walk) {
+        traverseChain(node, Walk.POST_ORDER, walk);
+    }
+
+    /**
+     * Traversing the chain and its parents, order depending on the specified mode.
+     * {@link Walk.Mode#PRE_ORDER} means the traversal happens from root to child.
+     * {@link Walk.Mode#POST_ORDER} means the traversal happens from child to root.
+     *
+     * @param node The node that begins the chain traversal towards its parent.
+     * @param mode The order of the traversal.
+     * @param walk The walk executed for each element.
+     */
+    public void traverseChain(@NonNull Node node, @Walk.Mode final int mode, @NonNull Walk walk) {
         checkNode(node);
         checkWalk(walk);
 
-        final Cancellation cancellation = new Cancellation();
-        Walk.CancellationToken cancellationToken = new CancellationTokenImpl(cancellation);
-        Node currentNode = node;
-        while(currentNode != null) {
-            currentNode.execute(walk, cancellationToken);
-            if(cancellation.isCancelled()) {
-                break;
+        if(mode == Walk.POST_ORDER) {
+            final Cancellation cancellation = new Cancellation();
+            Walk.CancellationToken cancellationToken = new CancellationTokenImpl(cancellation);
+            Node currentNode = node;
+            while(currentNode != null) {
+                currentNode.execute(walk, cancellationToken);
+                if(cancellation.isCancelled()) {
+                    break;
+                }
+                currentNode = currentNode.getParent();
             }
-            currentNode = currentNode.getParent();
+        } else if(mode == Walk.PRE_ORDER) { // execute POST_ORDER, then walk the nodes in reverse
+            final List<Node> nodes = new ArrayList<>();
+            traverseChain(node, new Walk() {
+                @Override
+                public void execute(@NonNull Node node, @NonNull CancellationToken cancellationToken) {
+                    nodes.add(node);
+                }
+            });
+            Collections.reverse(nodes);
+            final Cancellation cancellation = new Cancellation();
+            Walk.CancellationToken cancellationToken = new CancellationTokenImpl(cancellation);
+            for(Node _node : nodes) {
+                walk.execute(_node, cancellationToken);
+                if(cancellation.isCancelled()) {
+                    break;
+                }
+            }
         }
+    }
+
+    /**
+     * Traverses the parent chain of the provided node to find its root node.
+     * If the node is the root itself, then it is returned.
+     *
+     * @param child the child of a given chain
+     * @return the root node
+     */
+    @NonNull
+    public Node findRoot(@NonNull Node child) {
+        checkNode(child);
+
+        Node root = child;
+        while(root.getParent() != null) {
+            root = root.getParent();
+        }
+        return root;
     }
 
     private static void checkService(Object service) {
@@ -517,7 +571,7 @@ public class ServiceTree {
      * @param <T>  the type of the service
      * @return the service
      */
-    @Nullable
+    @NonNull
     public <T> T getRootService(String name) {
         // noinspection unchecked
         return (T) root.getService(name);
