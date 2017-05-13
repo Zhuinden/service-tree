@@ -1,6 +1,7 @@
 package com.zhuinden.servicetree;
 
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class ServiceTreeTest {
     @Test
     public void bindingServiceWorks() {
         TestKey rootKey = new TestKey("root");
-        Object service = new Object();
+        ServiceTree.Scoped service = Mockito.mock(ServiceTree.Scoped.class);
         ServiceTree serviceTree = new ServiceTree();
         ServiceTree.Node node = serviceTree.createRootNode(rootKey).bindService("SERVICE", service);
         List<ServiceTree.Node.Entry> entries = node.getBoundServices();
@@ -65,15 +66,20 @@ public class ServiceTreeTest {
         assertThat(didFind).isTrue();
         assertThat(node.getService("SERVICE")).isSameAs(service);
         assertThat(node.hasBoundService("SERVICE")).isTrue();
+
+        Mockito.verify(service, Mockito.never()).onExitScope();
+        node.removeService("SERVICE");
+        Mockito.verify(service, Mockito.atLeastOnce()).onExitScope();
     }
 
     @Test
     public void bindingServiceToRootIsInheritedByChild() {
         TestKey rootKey = new TestKey("root");
         TestKey childKey = new TestKey("child");
-        Object service = new Object();
+        ServiceTree.Scoped service = Mockito.mock(ServiceTree.Scoped.class);
         ServiceTree serviceTree = new ServiceTree();
         ServiceTree.Node node = serviceTree.createRootNode(rootKey).bindService("SERVICE", service);
+        Mockito.verify(service, Mockito.atLeastOnce()).onEnterScope(node);
         ServiceTree.Node child = serviceTree.createChildNode(node, childKey);
 
         assertThat(node.hasBoundService("SERVICE")).isTrue();
@@ -81,6 +87,8 @@ public class ServiceTreeTest {
         assertThat(child.getService("SERVICE")).isSameAs(service);
         assertThat(child.getService("SERVICE")).isSameAs(service);
 
+        serviceTree.removeNodeAndChildren(node);
+        Mockito.verify(service, Mockito.atLeastOnce()).onExitScope();
     }
 
     @Test

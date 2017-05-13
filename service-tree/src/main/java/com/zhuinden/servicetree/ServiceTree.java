@@ -38,6 +38,24 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  */
 public class ServiceTree {
     /**
+     * An interface that allows you to listen for when the node your service belongs to is bound or unbound.
+     */
+    public interface Scoped {
+        /**
+         * Called when the service is bound to the node.
+         *
+         * @param node the node
+         */
+        void onEnterScope(ServiceTree.Node node);
+
+        /**
+         * Called when the node is removed from the tree, or the service is manually removed from the node.
+         */
+        void onExitScope();
+    }
+
+
+    /**
      * A node that holds its key, its children and its bound services.
      */
     public static final class Node {
@@ -175,6 +193,9 @@ public class ServiceTree {
             checkName(name);
             checkService(service);
             services.put(name, service);
+            if(service instanceof Scoped) {
+                ((Scoped) service).onEnterScope(this);
+            }
             return this;
         }
 
@@ -250,12 +271,16 @@ public class ServiceTree {
          * Removes the service.
          *
          * @param name the name of the service
-         * @param <T> the type of the service
+         * @param <T>  the type of the service
          * @return the service
          */
         public <T> T removeService(String name) {
             checkName(name);
-            return (T) services.remove(name);
+            Object service = services.remove(name);
+            if(service != null && service instanceof Scoped) {
+                ((Scoped) service).onExitScope();
+            }
+            return (T) service;
         }
 
         /**
@@ -396,14 +421,25 @@ public class ServiceTree {
     }
 
     /**
-     * Traverses the whole tree, including its root key.
+     * Traverses the whole tree, excluding the tree root.
      *
      * @param mode the order mode (see {@link ServiceTree.Walk}).
      * @param walk the {@link Walk} that should be executed for each node
      */
     public void traverseTree(@Walk.Mode final int mode, @NonNull final Walk walk) {
+        traverseTree(mode, false, walk);
+    }
+
+    /**
+     * Traverses the whole tree.
+     *
+     * @param mode            the order mode (see {@link Walk}).
+     * @param includeTreeRoot specifies whether the tree root should be included in the walk.
+     * @param walk            the {@link Walk} that should be executed for each node
+     */
+    public void traverseTree(@Walk.Mode final int mode, boolean includeTreeRoot, @NonNull final Walk walk) {
         checkWalk(walk);
-        traverseSubtree(root, mode, walk);
+        traverseSubtree(root, mode, includeTreeRoot, walk);
     }
 
     private void checkWalk(Walk walk) {
@@ -429,6 +465,11 @@ public class ServiceTree {
         traverseSubtree(node, Walk.POST_ORDER, new Walk() {
             @Override
             public void execute(@NonNull Node node, @NonNull CancellationToken cancellationToken) {
+                for(Node.Entry entry : node.getBoundServices()) {
+                    if(entry.getService() instanceof Scoped) {
+                        ((Scoped) entry.getService()).onExitScope();
+                    }
+                }
                 node.parent.children.remove(node);
                 nodeMap.remove(node.getKey());
             }
@@ -461,13 +502,25 @@ public class ServiceTree {
     }
 
     /**
-     * Traverses the subtree for this given node.
+     * Traverses the subtree for this given node, excluding the tree root.
      *
      * @param node the {@link Node} from which the traversal should start
      * @param mode the order mode (see {@link Walk})
      * @param walk the {@link Walk} that should be executed for each node
      */
     public void traverseSubtree(@NonNull final Node node, @Walk.Mode final int mode, @NonNull final Walk walk) {
+        traverseSubtree(node, mode, false, walk);
+    }
+
+    /**
+     * Traverses the subtree for this given node.
+     *
+     * @param node            the {@link Node} from which the traversal should start
+     * @param mode            the order mode (see {@link Walk})
+     * @param includeTreeRoot specifies whether the tree root should be included in the walk.
+     * @param walk            the {@link Walk} that should be executed for each node
+     */
+    public void traverseSubtree(@NonNull final Node node, @Walk.Mode final int mode, final boolean includeTreeRoot, @NonNull final Walk walk) {
         checkNode(node);
         checkWalk(walk);
 
@@ -476,7 +529,7 @@ public class ServiceTree {
         traverseSubtree(node, mode, new Walk() {
             @Override
             public void execute(@NonNull Node node, @NonNull CancellationToken cancellationToken) {
-                if(node.getKey().equals(ROOT_KEY)) {
+                if(!includeTreeRoot && node.getKey().equals(ROOT_KEY)) {
                     return;
                 }
                 walk.execute(node, cancellationToken);
@@ -485,14 +538,40 @@ public class ServiceTree {
     }
 
     /**
-     * Traversing the chain from the node through its parents.
-     * It is equivalent to calling {@link ServiceTree#traverseChain(Node, int, Walk)} with {@link Walk.Mode#POST_ORDER} parameter.
+     * Traversing the chain from the node through its parents, excluding the tree root.
+     * It is equivalent to calling {@link ServiceTree#traverseChain(Node, int, boolean, Walk)} with {@link Walk.Mode#POST_ORDER} parameter, excluding the tree root.
      *
      * @param node The node that begins the chain traversal towards its parent.
      * @param walk The walk executed for each element.
      */
     public void traverseChain(@NonNull Node node, @NonNull Walk walk) {
-        traverseChain(node, Walk.POST_ORDER, walk);
+        traverseChain(node, false, walk);
+    }
+
+    /**
+     * Traversing the chain from the node through its parents.
+     * It is equivalent to calling {@link ServiceTree#traverseChain(Node, int, boolean, Walk)} with {@link Walk.Mode#POST_ORDER} parameter.
+     *
+     * @param node            The node that begins the chain traversal towards its parent.
+     * @param includeTreeRoot specifies whether the tree root is included.
+     * @param walk            The walk executed for each element.
+     */
+    public void traverseChain(@NonNull Node node, boolean includeTreeRoot, @NonNull Walk walk) {
+        traverseChain(node, Walk.POST_ORDER, includeTreeRoot, walk);
+    }
+
+    /**
+     * Traversing the chain from the node through its parents.
+     * It is equivalent to calling {@link ServiceTree#traverseChain(Node, int, boolean, Walk)}, excluding the tree root.
+     * {@link Walk.Mode#PRE_ORDER} means the traversal happens from root to child.
+     * {@link Walk.Mode#POST_ORDER} means the traversal happens from child to root.
+     *
+     * @param node The node that begins the chain traversal towards its parent.
+     *             * @param mode The order of the traversal.
+     * @param walk The walk executed for each element.
+     */
+    public void traverseChain(@NonNull Node node, @Walk.Mode final int mode, @NonNull Walk walk) {
+        traverseChain(node, mode, false, walk);
     }
 
     /**
@@ -500,11 +579,12 @@ public class ServiceTree {
      * {@link Walk.Mode#PRE_ORDER} means the traversal happens from root to child.
      * {@link Walk.Mode#POST_ORDER} means the traversal happens from child to root.
      *
-     * @param node The node that begins the chain traversal towards its parent.
-     * @param mode The order of the traversal.
-     * @param walk The walk executed for each element.
+     * @param node            The node that begins the chain traversal towards its parent.
+     * @param mode            The order of the traversal.
+     * @param includeTreeRoot specifies whether the tree root is included.
+     * @param walk            The walk executed for each element.
      */
-    public void traverseChain(@NonNull Node node, @Walk.Mode final int mode, @NonNull Walk walk) {
+    public void traverseChain(@NonNull Node node, @Walk.Mode final int mode, final boolean includeTreeRoot, @NonNull Walk walk) {
         checkNode(node);
         checkWalk(walk);
 
@@ -517,7 +597,7 @@ public class ServiceTree {
                 if(cancellation.isCancelled()) {
                     break;
                 }
-                currentNode = currentNode.getParent();
+                currentNode = !includeTreeRoot ? currentNode.getParent() : currentNode.parent; // getParent() hides tree root
             }
         } else if(mode == Walk.PRE_ORDER) { // execute POST_ORDER, then walk the nodes in reverse
             final List<Node> nodes = new ArrayList<>();

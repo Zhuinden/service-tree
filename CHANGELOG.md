@@ -1,5 +1,15 @@
 # Change log
 
+-Service Tree 1.6.0 (2017-05-13)
+--------------------------------
+- ADDED: `ServiceTree.Scoped` interface which provides `onEnterScope(Node)` and `onExitScope()` methods.
+
+`onEnterScope` is called when the service is bound to the node. 
+
+`onExitScope()` is called if the service is removed from the node, or the node is removed from the tree.
+
+- ADDED: `traverseChain`, `traverseTree`, `traverseSubtree` variants with `boolean` that specifies whether the tree root should be included in the traversal.
+
 -Service Tree 1.5.2 (2017-05-13)
 --------------------------------
 - ADDED: `hasRootService()` method, which *should* have existed to pair with `@NonNull` `getRootService()`. Whoops.
