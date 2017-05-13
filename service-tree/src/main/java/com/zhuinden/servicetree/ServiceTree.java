@@ -247,11 +247,11 @@ public class ServiceTree {
         }
 
         /**
-         * Removes the service
+         * Removes the service.
          *
-         * @param name
-         * @param <T>
-         * @return
+         * @param name the name of the service
+         * @param <T> the type of the service
+         * @return the service
          */
         public <T> T removeService(String name) {
             checkName(name);
