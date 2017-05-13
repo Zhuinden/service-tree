@@ -1,7 +1,9 @@
 package com.zhuinden.servicetree;
 
 import org.junit.Test;
+
 import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -23,7 +25,7 @@ public class ServiceTreeTest {
         assertThat(serviceTree.getKeys()).doesNotContain(serviceTree.root.getKey());
         assertThat(serviceTree.getKeys()).contains(node.getKey());
 
-        serviceTree.removeNodeAndChildren(node);
+        node.removeNodeAndChildren();
         assertThat(serviceTree.hasNodeWithKey(testKey)).isFalse();
     }
 
@@ -108,13 +110,16 @@ public class ServiceTreeTest {
 
         serviceTree.registerRootService("SERVICE", service);
 
+        assertThat(serviceTree.hasRootService("SERVICE")).isTrue();
         assertThat(child.getService("SERVICE")).isSameAs(service);
         assertThat(node.getService("SERVICE")).isSameAs(service);
 
         assertThat(child.hasService("SERVICE")).isTrue();
         assertThat(node.hasService("SERVICE")).isTrue();
         assertThat(serviceTree.getRootService("SERVICE")).isSameAs(service);
+        assertThat(serviceTree.root).isSameAs(serviceTree.getTreeRoot());
         assertThat(serviceTree.unregisterRootService("SERVICE")).isSameAs(service);
+        assertThat(serviceTree.hasRootService("SERVICE")).isFalse();
 
         try {
             child.getService("SERVICE");

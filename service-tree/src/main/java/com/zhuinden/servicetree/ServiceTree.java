@@ -246,9 +246,36 @@ public class ServiceTree {
             return Collections.unmodifiableList(new ArrayList<>(children));
         }
 
-        <T> T removeService(String name) {
-            // noinspection unchecked
+        /**
+         * Removes the service
+         *
+         * @param name
+         * @param <T>
+         * @return
+         */
+        public <T> T removeService(String name) {
+            checkName(name);
             return (T) services.remove(name);
+        }
+
+        /**
+         * Creates a node that is a child of this node as a parent.
+         * Children are removed along with their parent. Children inherit the services of their parent.
+         *
+         * @param nodeKey the key that identifies the child node
+         * @return the {@link Node} to bind services to
+         */
+        @NonNull
+        public Node createChild(@NonNull Object nodeKey) {
+            checkKey(nodeKey);
+            return serviceTree.createChildNode(this, nodeKey);
+        }
+
+        /**
+         * Removes this node and its children from the service tree.
+         */
+        public void removeNodeAndChildren() {
+            serviceTree.removeNodeAndChildren(this);
         }
 
         @Override
@@ -522,7 +549,6 @@ public class ServiceTree {
     @NonNull
     public Node findRoot(@NonNull Node child) {
         checkNode(child);
-
         Node root = child;
         while(root.getParent() != null) {
             root = root.getParent();
@@ -553,6 +579,15 @@ public class ServiceTree {
     }
 
     /**
+     * Returns the tree root. It is not provided by any traversal, because it is a special node.
+     *
+     * @return the tree root
+     */
+    public Node getTreeRoot() {
+        return root;
+    }
+
+    /**
      * Adds a service to the node of the tree root.
      *
      * @param name    the name of the service
@@ -565,7 +600,17 @@ public class ServiceTree {
     }
 
     /**
-     * Gets the service specified by the given name.
+     * Checks if the node of the tree root has the given service.
+     *
+     * @param name the name of the service
+     * @return whether there is a service by the name
+     */
+    public boolean hasRootService(String name) {
+        return root.hasBoundService(name);
+    }
+
+    /**
+     * Gets the service specified by the given name from the node of the tree root.
      *
      * @param name the name of the service
      * @param <T>  the type of the service
@@ -589,7 +634,6 @@ public class ServiceTree {
         // noinspection unchecked
         return (T) root.removeService(name);
     }
-
 
     /**
      * The operation that is executed for each node during {@link ServiceTree#traverseTree(int, Walk)} and {@link ServiceTree#traverseSubtree(Node, int, Walk)}.

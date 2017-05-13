@@ -1,5 +1,13 @@
 # Change log
 
+-Service Tree 1.5.2 (2017-05-13)
+--------------------------------
+- ADDED: `hasRootService()` method, which *should* have existed to pair with `@NonNull` `getRootService()`. Whoops.
+- ADDED: `node.createChild(Object)` to allow creating a child for a node without directly chatting with the tree.
+- ADDED: `node.removeNodeAndChildren()` which removes it from its associated tree.
+- CHANGE: `node.removeService(String)` is now public, because I shouldn't tell you how to live your life.
+- READDED: `serviceTree.getTreeRoot()` so that you *can* do `treeRoot.getBoundServices()` if you so desire.
+
 -Service Tree 1.5.1 (2017-05-06)
 --------------------------------
 - ADDED: `findRoot(Node)` method that finds the root for a particular node.
