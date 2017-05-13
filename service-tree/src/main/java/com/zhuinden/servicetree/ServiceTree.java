@@ -567,7 +567,7 @@ public class ServiceTree {
      * {@link Walk.Mode#POST_ORDER} means the traversal happens from child to root.
      *
      * @param node The node that begins the chain traversal towards its parent.
-     *             * @param mode The order of the traversal.
+     * @param mode The order of the traversal.
      * @param walk The walk executed for each element.
      */
     public void traverseChain(@NonNull Node node, @Walk.Mode final int mode, @NonNull Walk walk) {
