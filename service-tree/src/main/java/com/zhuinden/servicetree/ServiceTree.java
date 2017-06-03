@@ -520,7 +520,7 @@ public class ServiceTree {
      * @param includeTreeRoot specifies whether the tree root should be included in the walk.
      * @param walk            the {@link Walk} that should be executed for each node
      */
-    public void traverseSubtree(@NonNull final Node node, @Walk.Mode final int mode, final boolean includeTreeRoot, @NonNull final Walk walk) {
+    void traverseSubtree(@NonNull final Node node, @Walk.Mode final int mode, final boolean includeTreeRoot, @NonNull final Walk walk) {
         checkNode(node);
         checkWalk(walk);
 

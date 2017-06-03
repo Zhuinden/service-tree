@@ -1,5 +1,9 @@
 # Change log
 
+-Service Tree 1.6.1 (2017-06-03)
+--------------------------------
+- CHANGE: traverseSubtree(@NonNull final Node node, @Walk.Mode final int mode, final boolean includeTreeRoot, @NonNull final Walk walk) is package-private.
+
 -Service Tree 1.6.0 (2017-05-13)
 --------------------------------
 - ADDED: `ServiceTree.Scoped` interface which provides `onEnterScope(Node)` and `onExitScope()` methods.
